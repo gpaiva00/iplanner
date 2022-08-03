@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  /* @apply bg-background; */
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+.gradient-background {
+  @apply bg-terracota-100;
+  /* @apply bg-[url("/src/assets/background.jpg")]; */
+  /* @apply bg-cover; */
+  /* @apply bg-gradient-to-b-[0deg, #b2764b 0%, #c9ab99 11%, #dcd3cc 100%"]; */
+}
+
+.default-background {
+  @apply bg-terracota-100 flex flex-col min-h-screen;
+}
+
+.header-title {
+  @apply flex pr-16 font-bold text-3xl text-slate-700;
+}
+
+.header-menu {
+  @apply text-xl text-zinc-900 hover:underline hover:text-primary transition-colors;
+}
+
+.header-menu-selected {
+  @apply font-bold underline text-primary;
+}
+
+.title {
+  @apply text-3xl font-bold text-primary;
+}
+
+.label {
+  @apply block text-zinc-900 text-sm font-bold;
+}
+
+.budget-card-title {
+  @apply text-base font-bold text-zinc-900 dark:text-white line-clamp-2 hover:underline;
+}
+
+.budget-card-link {
+  @apply flex items-center gap-1 text-zinc-900 hover:underline;
+}
+
+.description {
+  @apply flex items-center text-base text-zinc-600;
+}
+
+.modal-title {
+  @apply text-2xl font-bold text-primary;
+}
+
+.modal-subtitle {
+  @apply text-xs text-zinc-600;
+}
+
+.card-title {
+  @apply text-2xl font-bold tracking-tight text-gray-900 dark:text-white;
+}
+
+.card-description {
+  @apply font-normal leading-relaxed text-gray-500 dark:text-gray-400;
+}
+
+.default-card-hover-effect {
+  @apply cursor-pointer hover:scale-105 transition-transform;
+}
+
+*:focus {
+  outline: none;
+}

@@ -1,0 +1,115 @@
+[
+  {
+    "name": "Vestidos",
+    "description": "Meus vestidos do grande dia",
+    "image": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=318&h=212&q=60",
+    "items": [
+      {
+        "name": "Vestido de luxo",
+        "price": 1.000,
+        "image": "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+        "link": "https://www.jw.org",
+        "category": "vestidos",
+        "type": "wishlist"
+      },
+      {
+        "name": "Vestido de cetim",
+        "price": 2.000,
+        "image": "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+        "link": "https://www.jw.org",
+        "category": "vestidos",
+        "type": "purchased"
+      },
+      {
+        "name": "Vestido de seda",
+        "price": 1.000,
+        "image": "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+        "link": "https://www.jw.org",
+        "category": "vestidos",
+        "type": "wishlist"
+      }
+    ]
+  },
+  {
+    "name": "Enxoval",
+    "description": "Enxoval para todos os tipos de uso",
+    "image": "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60",
+    "items": [
+      {
+        "name": "1 Travesseiro de Corpo Com Fronha de Zipper Antialérgico Fibra Siliconada Extra Xuxão MG - Mega Conforto",
+        "price": "44,97",
+        "link": "https://www.magazineluiza.com.br/1-travesseiro-de-corpo-com-fronha-de-zipper-antialergico-fibra-siliconada-extra-xuxao-mg-mega-conforto/p/hg9905kk89/cm/tvcp/",
+        "image": "https://a-static.mlcdn.com.br/800x560/1-travesseiro-de-corpo-com-fronha-de-zipper-antialergico-fibra-siliconada-extra-xuxao-mg-mega-conforto/megadivi/15814204177/67b19f15e4e11a5c4b61d727c527aa29.jpeg",
+        "category": "cama",
+        "type": "wishlist"
+      },
+      {
+        "name": "Cortina Roma Para Sala e Quarto 4,00 x 2,50 Admirare",
+        "price": "114,90",
+        "link": "https://www.magazineluiza.com.br/cortina-roma-para-sala-e-quarto-400-x-250-admirare/p/ad0f1b11b8/cm/ctqu/",
+        "image": "",
+        "category": "sala",
+        "type": "purchased"
+      },
+      {
+        "name": "Jogo de Toalhas de Banho Karsten Otto - Azul e Allure 3 Peças",
+        "price": "79,90",
+        "link": "https://www.magazineluiza.com.br/jogo-de-toalhas-de-banho-karsten-otto-azul-e-allure-3-pecas/p/232514400/cm/joto/",
+        "image": "https://a-static.mlcdn.com.br/800x560/jogo-de-toalhas-de-banho-karsten-otto-azul-e-allure-3-pecas/magazineluiza/232514400/45b3066e72fb839da92138a0c635b3ac.jpg",
+        "category": "banho",
+        "type": "purchased"
+      },
+      {
+        "name": "Manta Cobertor Casal 180x220cm Microfibra Soft Macia Fleece Camesa - Emcompre",
+        "price": "62,89",
+        "link": "https://www.casasbahia.com.br/cama-mesa-banho/CobertoreManta/cobertorCasal/manta-cobertor-casal-180x220cm-microfibra-soft-macia-fleece-camesa-emcompre-1514431078.html?IdSku=1514431078",
+        "image": "https://imgs.casasbahia.com.br/1514431078/1xg.jpg",
+        "category": "cama",
+        "type": "wishlist"
+      }
+    ]
+  },
+  {
+    "name": "Casa",
+    "description": "Itens da casa",
+    "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=318&h=212&q=60",
+    "items": [
+      {
+        "name": "lençol casal queen 3 pçs",
+        "price": 1.000,
+        "link": "https://www.jw.org",
+        "image": "/src/assets/images/enxoval.jpg",
+        "category": "Cama",
+        "type": "wishlist"
+      },
+      {
+        "name": "lençol casal queen 3 pçs",
+        "price": 1.000,
+        "link": "https://www.jw.org",
+        "image": "/src/assets/images/enxoval.jpg",
+        "category": "Cama",
+        "type": "purchased"
+      }
+    ]
+  },
+  {
+    "name": "Teste",
+    "description": "lorem ipsum dolor sit amet",
+    "image": "https://picsum.photos/318/212?random=1"
+  },
+  {
+    "name": "Teste",
+    "description": "lorem ipsum dolor sit amet",
+    "image": "https://picsum.photos/318/212?random=2"
+  },
+  {
+    "name": "Teste",
+    "description": "lorem ipsum dolor sit amet",
+    "image": "https://picsum.photos/318/212?random=3"
+  },
+  {
+    "name": "Teste",
+    "description": "lorem ipsum dolor sit amet",
+    "image": "https://picsum.photos/318/212?random=4"
+  }
+]

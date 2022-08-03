@@ -1,0 +1,83 @@
+{
+  "budgets": [
+    {
+      "id": 1,
+      "name": "Vestidos",
+      "description": "Meus vestidos do grande dia",
+      "image": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=318&h=212&q=60",
+      "items": [
+        {
+          "name": "Luxo",
+          "price": 1,
+          "image": "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+          "link": "https://www.jw.org",
+          "category": "vestidos",
+          "type": "wishlist"
+        },
+        {
+          "name": "Vestido de cetim",
+          "price": 2,
+          "image": "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+          "link": "https://www.jw.org",
+          "category": "vestidos",
+          "type": "purchased"
+        },
+        {
+          "name": "Vestido de seda",
+          "price": 1,
+          "image": "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+          "link": "https://www.jw.org",
+          "category": "vestidos",
+          "type": "wishlist"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Enxoval",
+      "description": "Enxoval para todos os tipos de uso",
+      "image": "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60",
+      "items": []
+    },
+    {
+      "id": 3,
+      "name": "Casa",
+      "description": "Itens da casa",
+      "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=318&h=212&q=60",
+      "items": [
+        {
+          "name": "lençol casal queen 3 pçs",
+          "price": 1,
+          "link": "https://www.jw.org",
+          "image": "/src/assets/images/enxoval.jpg",
+          "category": "Cama",
+          "type": "wishlist"
+        },
+        {
+          "name": "lençol casal queen 3 pçs",
+          "price": 1,
+          "link": "https://www.jw.org",
+          "image": "/src/assets/images/enxoval.jpg",
+          "category": "Cama",
+          "type": "purchased"
+        }
+      ]
+    }
+  ],
+  "guests": [
+    {
+      "id": 1,
+      "code": "asd1",
+      "guestName": "Bianca e Tiago"
+    },
+    {
+      "id": 2,
+      "code": "asd2",
+      "guestName": "Letícia e Alex"
+    }
+  ],
+  "login": {
+    "username": "test",
+    "password": "123"
+  }
+}
