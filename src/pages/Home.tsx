@@ -1,46 +1,51 @@
-import classNames from 'classnames';
-import { CaretRight, CheckCircle } from 'phosphor-react';
-import { useState } from 'react';
-import Button from '../components/Button';
-import CustomInput from '../components/CustomInput';
-import HomeAvatar from '../components/HomeAvatar';
-import HomeHeader from '../components/HomeHeader';
-import Loading from '../components/Loading';
-import PageFooter from '../components/PageFooter';
+import classNames from 'classnames'
+import { CaretRight, CheckCircle } from 'phosphor-react'
+import { useState } from 'react'
+import Button from '../components/Button'
+import CustomInput from '../components/CustomInput'
+import HomeAvatar from '../components/HomeAvatar'
+import HomeHeader from '../components/HomeHeader'
+import Loading from '../components/Loading'
+import PageFooter from '../components/PageFooter'
 
-import confirmationCodesMock from '../mocks/confirmationCodes.json';
+import { useGetConfirmationCodeQueryQuery } from '../graphql/generated'
 
 export default function Home() {
-  const [isConfirmedAttendance, setIsConfirmedAttendance] = useState(false);
-  const [codeText, setCodeText] = useState('');
-  const [guestName, setGuestName] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isConfirmedAttendance, setIsConfirmedAttendance] = useState(false)
+  const [code, setCode] = useState('')
+  const [guestName, setGuestName] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  const { data } = useGetConfirmationCodeQueryQuery({
+    variables: {
+      where: {
+        code
+      }
+    }
+  })
 
   const handleConfirmAttendance = () => {
-    setIsLoading(true);
-    const confirmationCode = confirmationCodesMock.find(
-      item => item.code === codeText
-    );
+    setIsLoading(true)
 
-    if (!confirmationCode) {
-      alert('Código de confirmação inválido');
-      setIsLoading(false);
-      return;
+    if (!data?.confirmation) {
+      alert('Código de confirmação inválido')
+      setIsLoading(false)
+      return
     }
 
-    setGuestName(confirmationCode.guestName);
+    setGuestName(data.confirmation?.guestName)
 
-    setIsConfirmedAttendance(true);
+    setIsConfirmedAttendance(true)
     setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  };
+      setIsLoading(false)
+    }, 2000)
+  }
 
   const handleUndoConfirmation = () => {
-    setIsConfirmedAttendance(false);
-    setGuestName('');
-    setCodeText('');
-  };
+    setIsConfirmedAttendance(false)
+    setGuestName('')
+    setCode('')
+  }
 
   return (
     <div className="gradient-background flex flex-col min-h-screen">
@@ -57,15 +62,15 @@ export default function Home() {
 
           {isLoading && <Loading />}
 
-          {!isConfirmedAttendance && (
+          {!isConfirmedAttendance && !isLoading && (
             <div className="flex flex-col items-center gap-4 mt-8 mb-16 transition-all opacity-1 ease-in-out">
               <h1 className="title">Confirme sua presença</h1>
 
               <div className="flex justify-center items-center gap-4">
                 <CustomInput
                   placeholder="Código de confirmação"
-                  value={codeText}
-                  onChange={e => setCodeText(e.target.value)}
+                  value={code}
+                  onChange={e => setCode(e.target.value)}
                 />
                 <Button onClick={handleConfirmAttendance} className="font-bold">
                   <CaretRight />
@@ -103,5 +108,5 @@ export default function Home() {
       </div>
       <PageFooter />
     </div>
-  );
+  )
 }

@@ -1,7 +1,14 @@
-import { CircleNotch } from 'phosphor-react'
+import currency from 'currency.js'
 import { useState } from 'react'
-import { Budget } from '../interfaces/Budget'
+import {
+  Budget,
+  BudgetType,
+  Category,
+  useCreateBudgetItemMutation,
+  usePublishBudgetItemMutation
+} from '../graphql/generated'
 import { validateURL } from '../utils'
+import { formatToCurrency, moneyMask } from '../utils/formatToCurrency'
 import Button from './Button'
 import CustomInput from './CustomInput'
 import CustomModal from './CustomModal'
@@ -19,20 +26,25 @@ export default function AddBudgetItemModal(props: AddBudgetItemModalProps) {
 
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
-  const [type, setType] = useState('')
-  const [category, setCategory] = useState('')
+  const [type, setType] = useState<BudgetType>(BudgetType.Wishlist)
+  const [category, setCategory] = useState<Category>(Category.Cama)
   const [link, setLink] = useState('')
-  const [image, setImage] = useState('')
+  const [imageURL, setImageURL] = useState('')
   const [imagePreview, setImagePreview] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+
+  const [createBudgetItem, { loading: mutationLoading }] =
+    useCreateBudgetItemMutation()
+  const [publishBudgetItem, { loading: publishLoading }] =
+    usePublishBudgetItemMutation()
 
   const handleClose = () => {
     setName('')
     setPrice('')
-    setType('')
-    setCategory('')
+    setType(BudgetType.Wishlist)
+    setCategory(Category.Cama)
     setLink('')
-    setImage('')
+    setImageURL('')
     setImagePreview('')
     onClose()
   }
@@ -42,7 +54,7 @@ export default function AddBudgetItemModal(props: AddBudgetItemModalProps) {
   const handleOnImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const imageURL = event.target.value
 
-    setImage(imageURL)
+    setImageURL(imageURL)
     setImagePreview('')
 
     const isValid = validateURL(imageURL)
@@ -68,9 +80,34 @@ export default function AddBudgetItemModal(props: AddBudgetItemModalProps) {
       return
     }
 
-    //  TODO: add budget to database
+    if (link.length && !validateURL(link))
+      return alert('O link do produto é inválido')
 
-    handleClose()
+    try {
+      const newPrice = currency(price.replace(',', '.')).value
+
+      const { data } = await createBudgetItem({
+        variables: {
+          name,
+          price: newPrice,
+          budgetType: type,
+          category,
+          link,
+          imageURL,
+          budgetId: budget.id
+        }
+      })
+
+      await publishBudgetItem({
+        variables: {
+          id: data.createBudgetItem.id
+        }
+      })
+
+      window.location.reload()
+    } catch (error) {
+      console.log('Error create budget item', error)
+    }
   }
 
   return (
@@ -99,8 +136,7 @@ export default function AddBudgetItemModal(props: AddBudgetItemModalProps) {
                 label="Preço"
                 placeholder="R$ 0,00"
                 value={price}
-                onChange={e => setPrice(e.target.value)}
-                type="number"
+                onChange={e => setPrice(moneyMask(e.target.value))}
                 className="w-32"
                 required
               />
@@ -109,12 +145,12 @@ export default function AddBudgetItemModal(props: AddBudgetItemModalProps) {
                 label="Categoria"
                 onChange={setCategory}
                 options={[
-                  { text: 'Cama', value: 'cama' },
-                  { text: 'Banho', value: 'banho' },
-                  { text: 'Sala', value: 'sala' },
-                  { text: 'Quarto', value: 'quarto' },
-                  { text: 'Cozinha', value: 'cozinha' },
-                  { text: 'Outros', value: 'outros' }
+                  { text: 'Cama', value: Category.Cama },
+                  { text: 'Banho', value: Category.Banho },
+                  { text: 'Sala', value: Category.Sala },
+                  { text: 'Quarto', value: Category.Quarto },
+                  { text: 'Cozinha', value: Category.Cozinha },
+                  { text: 'Outros', value: Category.Outros }
                 ]}
                 required
                 width={56}
@@ -129,25 +165,11 @@ export default function AddBudgetItemModal(props: AddBudgetItemModalProps) {
             />
 
             <div className="flex items-center justify-between">
-              {/* <div className="flex flex-col gap-2">
-                <label className="block text-zinc-900 text-sm font-bold">
-                  Tipo
-                </label>
-                <select
-                  className="rounded focus:outline-none w-32"
-                  onChange={e => setType(e.target.value)}
-                  required
-                >
-                  <option value="">Tipo</option>
-                  <option value="wishlist">Lista de desejos</option>
-                  <option value="purchased">Comprado</option>
-                </select>
-              </div> */}
               <Select
                 label="Tipo"
                 options={[
-                  { value: 'wishlist', text: 'Lista de desejos' },
-                  { value: 'purchased', text: 'Comprado' }
+                  { value: BudgetType.Wishlist, text: 'Lista de desejos' },
+                  { value: BudgetType.Purchased, text: 'Comprado' }
                 ]}
                 onChange={setType}
                 required
@@ -157,7 +179,7 @@ export default function AddBudgetItemModal(props: AddBudgetItemModalProps) {
                 label="Imagem"
                 optional
                 placeholder="Ex: https://www.google.com"
-                value={image}
+                value={imageURL}
                 onChange={handleOnImageChange}
                 type="url"
                 className="w-56"
@@ -186,6 +208,7 @@ export default function AddBudgetItemModal(props: AddBudgetItemModalProps) {
             variant="primary"
             size="full"
             type="submit"
+            isLoading={mutationLoading || publishLoading}
           >
             Adicionar
           </Button>

@@ -1,15 +1,15 @@
-import { formatToCurrency } from "./formatToCurrency";
-import { sumAllPrices } from "./sumAllPrices";
-import { getStoreNameFromURL } from "./getStoreNameFromURL";
-import { getNameOfBudgetType } from "./getNameOfBudgetType";
-import generateRandomCode from "./generateRandomCode";
-import validateURL from "./validateURL";
+import { BRL } from './formatToCurrency'
+import { sumAllPrices } from './sumAllPrices'
+import { getStoreNameFromURL } from './getStoreNameFromURL'
+import { getNameOfBudgetType } from './getNameOfBudgetType'
+import generateRandomCode from './generateRandomCode'
+import validateURL from './validateURL'
 
 export {
-  formatToCurrency,
+  BRL,
   sumAllPrices,
   getStoreNameFromURL,
   getNameOfBudgetType,
   generateRandomCode,
-  validateURL,
+  validateURL
 }

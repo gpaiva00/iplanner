@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react'
-import { BudgetItem } from '../interfaces/Budget'
+import currency from 'currency.js'
+import { moneyMask } from '../utils/formatToCurrency'
+import {
+  useUpdateBudgetItemMutationMutation,
+  BudgetType,
+  Category,
+  usePublishBudgetItemMutation,
+  BudgetItem
+} from '../graphql/generated'
 import { validateURL } from '../utils'
 import Button from './Button'
 import CustomInput from './CustomInput'
@@ -17,14 +25,21 @@ interface EditBudgetItemModalProps {
 export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
   const { show, onClose, budgetItem, budgetName } = props
 
+  const [id, setId] = useState()
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
-  const [type, setType] = useState('')
-  const [category, setCategory] = useState('')
+  const [type, setType] = useState<BudgetType>(BudgetType.Wishlist)
+  const [category, setCategory] = useState<Category>(Category.Cama)
   const [link, setLink] = useState('')
-  const [image, setImage] = useState('')
+  const [imageURL, setImageURL] = useState('')
   const [imagePreview, setImagePreview] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+
+  const [updateBudgetItem, { loading: mutationLoading }] =
+    useUpdateBudgetItemMutationMutation()
+
+  const [publishBudgetItem, { loading: publishLoading }] =
+    usePublishBudgetItemMutation()
 
   const handleClose = () => {
     setName('')
@@ -32,7 +47,7 @@ export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
     setType('')
     setCategory('')
     setLink('')
-    setImage('')
+    setImageURL('')
     setImagePreview('')
     onClose()
   }
@@ -42,7 +57,7 @@ export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
   const handleOnImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const imageURL = event.target.value
 
-    setImage(imageURL)
+    setImageURL(imageURL)
     setImagePreview('')
 
     const isValid = validateURL(imageURL)
@@ -68,19 +83,49 @@ export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
       return
     }
 
-    //  TODO: add budget to database
+    if (link.length && !validateURL(link))
+      return alert('O link do produto é inválido')
+
+    try {
+      const newPrice = currency(price.replace(',', '.')).value
+
+      const { data } = await updateBudgetItem({
+        variables: {
+          data: {
+            price: newPrice,
+            name,
+            budgetType: type,
+            category,
+            imageURL,
+            link
+          },
+          id
+        }
+      })
+
+      await publishBudgetItem({
+        variables: {
+          id: data?.updateBudgetItem?.id
+        }
+      })
+
+      window.location.reload()
+    } catch (error) {
+      console.log('Error update budget item', error)
+    }
 
     handleClose()
   }
 
   useEffect(() => {
     if (budgetItem) {
+      setId(budgetItem.id)
       setName(budgetItem.name)
       setPrice(parseFloat(budgetItem.price).toFixed(2))
-      setType(budgetItem.type)
+      setType(budgetItem.budgetType)
       setCategory(budgetItem.category)
       setLink(budgetItem.link || '')
-      setImage(budgetItem.image || '')
+      setImageURL(budgetItem.image || '')
       setImagePreview(budgetItem.image || '')
     }
   }, [budgetItem])
@@ -111,8 +156,7 @@ export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
                 label="Preço"
                 placeholder="R$ 0,00"
                 value={price}
-                onChange={e => setPrice(e.target.value)}
-                type="number"
+                onChange={e => setPrice(moneyMask(e.target.value))}
                 className="w-32"
                 required
               />
@@ -122,12 +166,12 @@ export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
                 onChange={setCategory}
                 value={category}
                 options={[
-                  { text: 'Cama', value: 'cama' },
-                  { text: 'Banho', value: 'banho' },
-                  { text: 'Sala', value: 'sala' },
-                  { text: 'Quarto', value: 'quarto' },
-                  { text: 'Cozinha', value: 'cozinha' },
-                  { text: 'Outros', value: 'outros' }
+                  { text: 'Cama', value: Category.Cama },
+                  { text: 'Banho', value: Category.Banho },
+                  { text: 'Sala', value: Category.Sala },
+                  { text: 'Quarto', value: Category.Quarto },
+                  { text: 'Cozinha', value: Category.Cozinha },
+                  { text: 'Outros', value: Category.Outros }
                 ]}
                 required
                 width={56}
@@ -146,8 +190,8 @@ export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
                 label="Tipo"
                 value={type}
                 options={[
-                  { value: 'wishlist', text: 'Lista de desejos' },
-                  { value: 'purchased', text: 'Comprado' }
+                  { value: BudgetType.Wishlist, text: 'Lista de desejos' },
+                  { value: BudgetType.Purchased, text: 'Comprado' }
                 ]}
                 onChange={setType}
                 required
@@ -157,7 +201,7 @@ export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
                 label="Imagem"
                 optional
                 placeholder="Ex: https://www.google.com"
-                value={image}
+                value={imageURL}
                 onChange={handleOnImageChange}
                 type="url"
                 className="w-56"
@@ -186,6 +230,7 @@ export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
             variant="primary"
             size="full"
             type="submit"
+            isLoading={mutationLoading || publishLoading}
           >
             Editar
           </Button>

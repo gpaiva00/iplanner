@@ -1,0 +1,5 @@
+mutation PublishBudgetItem($id: ID!) {
+  publishBudgetItem(to: PUBLISHED, where: { id: $id }) {
+    id
+  }
+}

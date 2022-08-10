@@ -5,10 +5,9 @@ import Button from '../components/Button'
 import DashboardHeader from '../components/DashboardHeader'
 import PageFooter from '../components/PageFooter'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Budget, BudgetItem } from '../interfaces/Budget'
 import { Card, Dropdown } from 'flowbite-react'
 import {
-  formatToCurrency,
+  BRL,
   getNameOfBudgetType,
   getStoreNameFromURL,
   sumAllPrices
@@ -19,6 +18,11 @@ import Loading from '../components/Loading'
 import NoContentPlaceholder from '../components/NoContentPlaceholder'
 import Badge from '../components/Badge'
 import EditBudgetItemModal from '../components/EditBudgetItemModal'
+import {
+  Budget,
+  BudgetItem,
+  useGetBudgetItemsQuery
+} from '../graphql/generated'
 
 interface StateProps {
   state: {
@@ -38,10 +42,16 @@ export default function BudgetDetail() {
   const navigate = useNavigate()
 
   const budget = state?.budget || {
+    id: '',
     name: '',
-    type: '',
-    items: []
+    type: ''
   }
+
+  const { data, loading: queryLoading } = useGetBudgetItemsQuery({
+    variables: {
+      id: budget.id
+    }
+  })
 
   const handleAddItem = () => {
     setShowAddBudgetItemModal(true)
@@ -63,8 +73,6 @@ export default function BudgetDetail() {
   }
 
   const handleEditCard = (item: BudgetItem) => {
-    console.warn('handleEditCard', item)
-
     setEditBudgetItem(item)
     setShowEditBudgetItemModal(true)
   }
@@ -81,15 +89,14 @@ export default function BudgetDetail() {
     <div className="gradient-background flex flex-col min-h-screen">
       <DashboardHeader />
 
-      {/* breadcrumb */}
-
       <div className="flex flex-1 flex-col w-full">
         <div className="flex gap-4 justify-end px-10 pt-10 pb-5">
           <div className="flex flex-col flex-1">
             <h1 className="title">{budget?.name}</h1>
             <span className="description">
-              {budget?.items.length} itens &#x2022;
-              {` ${formatToCurrency.format(sumAllPrices(budget?.items))}`}
+              {data?.budgetItems.length} itens &#x2022;
+              {!queryLoading &&
+                ` ${BRL(sumAllPrices(data?.budgetItems)).format()} totais`}
             </span>
           </div>
 
@@ -130,19 +137,19 @@ export default function BudgetDetail() {
         </div>
 
         <div className="flex flex-1 flex-wrap gap-8 justify-center items-center px-16 pb-32">
-          {isLoading && <Loading />}
+          {(isLoading || queryLoading) && <Loading />}
 
-          {!isLoading && !budget?.items.length && (
+          {!(isLoading || queryLoading) && !data?.budgetItems.length && (
             <NoContentPlaceholder
               title="Você ainda não possui itens nesse orçamento"
               description="Clique no botão acima para adicionar um item"
             />
           )}
 
-          {!isLoading &&
-            budget?.items.map((budget: BudgetItem) => {
+          {!(isLoading || queryLoading) &&
+            data?.budgetItems.map(budget => {
               const imageSrc =
-                budget.image || '/src/assets/images/placeholder-image.png'
+                budget.imageURL || '/src/assets/images/placeholder-image.png'
 
               return (
                 <div className="w-72 cursor-pointer">
@@ -155,10 +162,12 @@ export default function BudgetDetail() {
                         </Badge>
                         <Badge
                           type={
-                            budget.type === 'purchased' ? 'success' : 'wishlist'
+                            budget.budgetType === 'purchased'
+                              ? 'success'
+                              : 'wishlist'
                           }
                         >
-                          {getNameOfBudgetType(budget.type)}
+                          {getNameOfBudgetType(budget.budgetType)}
                         </Badge>
                       </div>
                       <p className="budget-card-title">{budget.name}</p>
@@ -179,7 +188,7 @@ export default function BudgetDetail() {
                         )}
                       </div>
                       <p className="font-normal text-zinc-900">
-                        {formatToCurrency.format(parseFloat(budget.price))}
+                        {BRL(budget.price).format()}
                       </p>
                     </div>
                   </Card>
@@ -200,11 +209,12 @@ export default function BudgetDetail() {
         show={showEditBudgetItemModal}
         onClose={() => setShowEditBudgetItemModal(false)}
       />
+      {/* 
       <FilterModal
         budget={budget}
         show={showFilterModal}
         onClose={() => setShowFilterModal(false)}
-      />
+      /> */}
       <PageFooter />
     </div>
   )

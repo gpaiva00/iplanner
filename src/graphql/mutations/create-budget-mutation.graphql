@@ -1,0 +1,11 @@
+mutation CreateBudget(
+  $imageURL: String = ""
+  $name: String! = ""
+  $description: String = ""
+) {
+  createBudget(
+    data: { name: $name, imageURL: $imageURL, description: $description }
+  ) {
+    id
+  }
+}

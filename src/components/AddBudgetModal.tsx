@@ -1,5 +1,8 @@
-import { CircleNotch } from 'phosphor-react'
 import { useState } from 'react'
+import {
+  useCreateBudgetMutation,
+  usePublishBudgetMutation
+} from '../graphql/generated'
 import { validateURL } from '../utils'
 import Button from './Button'
 import CustomInput from './CustomInput'
@@ -15,13 +18,18 @@ export default function AddBudgetModal(props: AddBudgetProps) {
   const { show, onClose } = props
 
   const [name, setName] = useState('')
-  const [image, setImage] = useState('')
+  const [imageURL, setImageURL] = useState('')
   const [imagePreview, setImagePreview] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
+  const [createBudget, { loading: mutationLoading }] = useCreateBudgetMutation()
+
+  const [publishSubscriber, { loading: publishLoading }] =
+    usePublishBudgetMutation()
+
   const handleClose = () => {
     setName('')
-    setImage('')
+    setImageURL('')
     setImagePreview('')
     onClose()
   }
@@ -31,7 +39,7 @@ export default function AddBudgetModal(props: AddBudgetProps) {
   const handleOnImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const imageURL = event.target.value
 
-    setImage(imageURL)
+    setImageURL(imageURL)
     setImagePreview('')
 
     const isValid = validateURL(imageURL)
@@ -62,9 +70,24 @@ export default function AddBudgetModal(props: AddBudgetProps) {
       return
     }
 
-    //  TODO: add budget to database
+    try {
+      const { data } = await createBudget({
+        variables: {
+          name,
+          imageURL
+        }
+      })
 
-    handleClose()
+      await publishSubscriber({
+        variables: {
+          id: data.createBudget.id
+        }
+      })
+
+      window.location.reload()
+    } catch (error) {
+      console.error('Error creating Budget', error)
+    }
   }
 
   return (
@@ -91,7 +114,7 @@ export default function AddBudgetModal(props: AddBudgetProps) {
             label="Imagem"
             optional
             placeholder="Ex: https://www.google.com"
-            value={image}
+            value={imageURL}
             onChange={handleOnImageChange}
             type="url"
           />
@@ -118,6 +141,7 @@ export default function AddBudgetModal(props: AddBudgetProps) {
             variant="primary"
             size="full"
             type="submit"
+            isLoading={mutationLoading || publishLoading}
           >
             Adicionar
           </Button>

@@ -1,9 +1,10 @@
+import { BudgetType } from '../graphql/generated'
 
-export const getNameOfBudgetType = (budgetType: "purchased" | "wishlist"): string => {
+export const getNameOfBudgetType = (budgetType: BudgetType): string => {
   switch (budgetType) {
-    case "purchased":
-      return 'Comprado';
-    case "wishlist":
-      return 'Lista de desejos';
+    case BudgetType.Purchased:
+      return 'Comprado'
+    case BudgetType.Wishlist:
+      return 'Lista de desejos'
   }
 }

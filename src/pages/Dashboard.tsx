@@ -8,7 +8,7 @@ export default function Dashboard() {
       <DashboardHeader />
 
       <div className="flex flex-1 gap-10 justify-center items-center px-16 pb-16">
-        <a href="/budgets" className="w-80 default-card-hover-effect">
+        <a href="/budgets" className="w-80">
           <Card imgSrc="/src/assets/images/finances.jpg">
             <h1 className="card-title">Orçamentos</h1>
             <p className="card-description">
@@ -17,7 +17,7 @@ export default function Dashboard() {
           </Card>
         </a>
 
-        <a href="#" className="w-80 default-card-hover-effect">
+        <a href="#" className="w-80">
           <Card imgSrc="/src/assets/images/guests.jpg">
             <h1 className="card-title">Convidados</h1>
             <p className="card-description">Gerencie seus convidados</p>

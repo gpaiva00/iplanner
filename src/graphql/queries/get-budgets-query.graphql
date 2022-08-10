@@ -1,0 +1,9 @@
+query GetBudgets {
+  budgets {
+    id
+    createdAt
+    imageURL
+    name
+    description
+  }
+}

@@ -5,18 +5,26 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "codegen": "graphql-codegen"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.9",
+    "@graphql-codegen/typescript": "^2.7.2",
+    "@graphql-codegen/typescript-operations": "^2.5.2",
+    "@graphql-codegen/typescript-react-apollo": "^3.3.2",
     "classnames": "^2.3.1",
+    "currency.js": "^2.0.4",
     "flowbite": "^1.5.1",
     "flowbite-react": "^0.1.4",
+    "graphql": "^16.5.0",
     "phosphor-react": "^1.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.11.3",
     "@tailwindcss/line-clamp": "^0.4.0",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",

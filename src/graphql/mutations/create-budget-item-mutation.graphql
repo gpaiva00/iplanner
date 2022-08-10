@@ -1,0 +1,23 @@
+mutation CreateBudgetItem(
+  $name: String = ""
+  $price: Float = 1.5
+  $link: String = ""
+  $imageURL: String = ""
+  $budgetType: BudgetType = wishlist
+  $category: Category = Cama
+  $budgetId: ID = ""
+) {
+  createBudgetItem(
+    data: {
+      name: $name
+      price: $price
+      link: $link
+      imageURL: $imageURL
+      budgetType: $budgetType
+      category: $category
+      budget: { connect: { id: $budgetId } }
+    }
+  ) {
+    id
+  }
+}

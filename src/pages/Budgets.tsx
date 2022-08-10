@@ -1,6 +1,6 @@
 import { Card } from 'flowbite-react'
-import { CircleNotch, Plus } from 'phosphor-react'
-import { useEffect, useState } from 'react'
+import { Plus } from 'phosphor-react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { DEFAULT_ICON_SIZE } from '../common/iconSizes'
 import AddBudgetModal from '../components/AddBudgetModal'
@@ -9,15 +9,12 @@ import DashboardHeader from '../components/DashboardHeader'
 import Loading from '../components/Loading'
 import NoContentPlaceholder from '../components/NoContentPlaceholder'
 import PageFooter from '../components/PageFooter'
-import { Budget } from '../interfaces/Budget'
-
-import budgetsMock from '../mocks/budgets.json'
+import { Budget, useGetBudgetsQuery } from '../graphql/generated'
 
 export default function Budgets() {
-  const [budgets, setBudgets] = useState<Budget[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
+
+  const { data, loading } = useGetBudgetsQuery()
 
   const navigate = useNavigate()
 
@@ -32,23 +29,6 @@ export default function Budgets() {
       }
     })
   }
-
-  const loadBudgets = async () => {
-    setIsLoading(true)
-
-    // const budgets = await fetch("http://localhost:3000/budgets").then(res => res.json());
-    setTimeout(() => {
-      setBudgets(budgetsMock)
-      setIsLoading(false)
-    }, 1000)
-
-    // setBudgets(budgets);
-    // setIsLoading(false);
-  }
-
-  useEffect(() => {
-    loadBudgets()
-  }, [])
 
   return (
     <div className="default-background">
@@ -65,24 +45,25 @@ export default function Budgets() {
         </div>
 
         <div className="flex flex-1 flex-wrap gap-8 justify-center items-center px-16 pb-32">
-          {isLoading && <Loading />}
+          {loading && <Loading />}
 
-          {!isLoading && !budgets.length && (
+          {!loading && !data?.budgets.length && (
             <NoContentPlaceholder
               title="Você ainda não possui nenhum orçamento"
               description="Clique no botão acima para criar um orçamento"
             />
           )}
 
-          {!isLoading &&
-            budgets.map(budget => (
-              <div className="w-80 default-card-hover-effect">
-                <span onClick={() => handleBudgetClick(budget)}>
-                  <Card imgSrc={budget.image}>
-                    <h1 className="card-title">{budget.name}</h1>
-                    <p className="card-description">{budget.description}</p>
-                  </Card>
-                </span>
+          {!loading &&
+            data?.budgets.map(budget => (
+              <div key={budget.id} className="w-80 cursor-pointer">
+                <Card
+                  onClick={() => handleBudgetClick(budget)}
+                  imgSrc={budget.imageURL}
+                >
+                  <h1 className="card-title">{budget.name}</h1>
+                  <p className="card-description">{budget.description}</p>
+                </Card>
               </div>
             ))}
         </div>

@@ -1,0 +1,8 @@
+mutation UpdateBudgetItemMutation(
+  $data: BudgetItemUpdateInput = {}
+  $id: ID = ""
+) {
+  updateBudgetItem(data: $data, where: { id: $id }) {
+    id
+  }
+}
