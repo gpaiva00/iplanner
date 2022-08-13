@@ -1,0 +1,9 @@
+mutation DeleteBudgetItemMutation($id: ID = "") {
+  deleteBudgetItem(where: { id: $id }) {
+    id
+  }
+
+  unpublishBudgetItem(where: { id: $id }) {
+    id
+  }
+}

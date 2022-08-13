@@ -15,6 +15,8 @@ interface ButtonProps {
     | 'outline-primary'
     | 'outline-secondary'
     | 'outline-tertiary'
+    | 'danger'
+
   isLoading?: boolean
   icon?: React.ReactNode
 }
@@ -43,11 +45,14 @@ export default function Button(props: ButtonProps) {
           'bg-tertiary': variant === 'tertiary',
           'bg-transparent border border-primary text-primary':
             variant === 'outline-primary',
-          'hover:bg-primary hover:text-white': variant === 'outline-primary',
+          'hover:bg-secondary hover:text-white hover:border-secondary':
+            variant === 'outline-primary',
           'bg-outline-secondary': variant === 'outline-secondary',
           'bg-outline-tertiary': variant === 'outline-tertiary',
           'hover:bg-secondary': variant === 'primary',
           'hover:bg-primary': variant === 'secondary',
+          'text-secondary border border-secondary hover:bg-secondary hover:text-white':
+            variant === 'danger',
           'text-gray-700':
             variant === 'secondary' || variant === 'outline-secondary',
           'text-gray-600':

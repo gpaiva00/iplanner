@@ -6,7 +6,8 @@ import {
   BudgetType,
   Category,
   usePublishBudgetItemMutation,
-  BudgetItem
+  BudgetItem,
+  useDeleteBudgetItemMutationMutation
 } from '../graphql/generated'
 import { validateURL } from '../utils'
 import Button from './Button'
@@ -14,6 +15,8 @@ import CustomInput from './CustomInput'
 import CustomModal from './CustomModal'
 import Loading from './Loading'
 import Select from './Select'
+import budgetCategories from '../common/budgetCategories'
+import budgetTypes from '../common/budgetTypes'
 
 interface EditBudgetItemModalProps {
   show: boolean
@@ -25,7 +28,7 @@ interface EditBudgetItemModalProps {
 export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
   const { show, onClose, budgetItem, budgetName } = props
 
-  const [id, setId] = useState()
+  const [id, setId] = useState('')
   const [name, setName] = useState('')
   const [price, setPrice] = useState('')
   const [type, setType] = useState<BudgetType>(BudgetType.Wishlist)
@@ -40,6 +43,9 @@ export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
 
   const [publishBudgetItem, { loading: publishLoading }] =
     usePublishBudgetItemMutation()
+
+  const [deleteBudgetItem, { loading: deleteLoading }] =
+    useDeleteBudgetItemMutationMutation()
 
   const handleClose = () => {
     setName('')
@@ -87,7 +93,7 @@ export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
       return alert('O link do produto é inválido')
 
     try {
-      const newPrice = currency(price.replace(',', '.')).value
+      const newPrice = currency(price, { decimal: ',' }).value
 
       const { data } = await updateBudgetItem({
         variables: {
@@ -117,16 +123,34 @@ export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
     handleClose()
   }
 
+  const handleDeleteItem = async () => {
+    const dialog = window.confirm('Tem certeza que deseja excluir esse item?')
+
+    if (!dialog) return
+
+    try {
+      await deleteBudgetItem({
+        variables: {
+          id
+        }
+      })
+
+      window.location.reload()
+    } catch (error) {
+      console.error('Error delete budget item', error)
+    }
+  }
+
   useEffect(() => {
     if (budgetItem) {
       setId(budgetItem.id)
       setName(budgetItem.name)
-      setPrice(parseFloat(budgetItem.price).toFixed(2))
+      setPrice(moneyMask(budgetItem.price))
       setType(budgetItem.budgetType)
       setCategory(budgetItem.category)
       setLink(budgetItem.link || '')
-      setImageURL(budgetItem.image || '')
-      setImagePreview(budgetItem.image || '')
+      setImageURL(budgetItem.imageURL || '')
+      setImagePreview(budgetItem.imageURL || '')
     }
   }, [budgetItem])
 
@@ -165,14 +189,7 @@ export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
                 label="Categoria"
                 onChange={setCategory}
                 value={category}
-                options={[
-                  { text: 'Cama', value: Category.Cama },
-                  { text: 'Banho', value: Category.Banho },
-                  { text: 'Sala', value: Category.Sala },
-                  { text: 'Quarto', value: Category.Quarto },
-                  { text: 'Cozinha', value: Category.Cozinha },
-                  { text: 'Outros', value: Category.Outros }
-                ]}
+                options={budgetCategories}
                 required
                 width={56}
               />
@@ -189,10 +206,7 @@ export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
               <Select
                 label="Tipo"
                 value={type}
-                options={[
-                  { value: BudgetType.Wishlist, text: 'Lista de desejos' },
-                  { value: BudgetType.Purchased, text: 'Comprado' }
-                ]}
+                options={budgetTypes}
                 onChange={setType}
                 required
                 width={32}
@@ -224,10 +238,18 @@ export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
         </div>
       }
       footer={
-        <div className="flex flex-1 items-center justify-center">
+        <div className="flex flex-1 gap-4 items-center justify-center">
+          <Button
+            onClick={handleDeleteItem}
+            variant="danger"
+            size="full"
+            type="submit"
+            isLoading={deleteLoading}
+          >
+            Excluir item
+          </Button>
           <Button
             onClick={handleEditBudgetItem}
-            variant="primary"
             size="full"
             type="submit"
             isLoading={mutationLoading || publishLoading}

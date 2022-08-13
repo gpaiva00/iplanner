@@ -1,0 +1,23 @@
+query FilterBudgetItemsQuery(
+  $budgetID: ID = ""
+  $name_contains: String = ""
+  $budgetType: BudgetType = purchased
+  $category: Category = Cama
+) {
+  budgetItems(
+    where: {
+      budget: { id: $budgetID }
+      name_contains: $name_contains
+      budgetType: $budgetType
+      category: $category
+    }
+  ) {
+    id
+    name
+    price
+    imageURL
+    budgetType
+    category
+    link
+  }
+}

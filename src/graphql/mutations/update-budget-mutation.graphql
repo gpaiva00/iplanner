@@ -1,0 +1,8 @@
+mutation UpdateBudgetMutation(
+  $data: BudgetUpdateInput = { imageURL: "", name: "" }
+  $id: ID = ""
+) {
+  updateBudget(data: $data, where: { id: $id }) {
+    id
+  }
+}

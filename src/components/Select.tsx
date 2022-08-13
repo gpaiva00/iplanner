@@ -31,7 +31,9 @@ export default function Select(props: SelectProps) {
       )}
 
       <select
-        className={`rounded focus:outline-none w-${String(width)}`}
+        className={`rounded focus:outline-none border-zinc-300 w-${String(
+          width
+        )}`}
         onChange={e => onChange(e.target.value)}
         value={value}
       >

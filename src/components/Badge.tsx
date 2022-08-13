@@ -18,7 +18,7 @@ export default function Badge(props: BadgeProps) {
   return (
     <div
       className={classNames(
-        'flex gap-1 text-xs font-semibold py-1 px-2 rounded text-white items-center',
+        'flex gap-1 text-xs font-semibold py-0.5 px-1.5 rounded text-white items-center',
         { 'bg-success text-green-700': type === 'success' },
         { 'bg-red-700': type === 'danger' },
         { 'bg-orange-700': type === 'warning' },

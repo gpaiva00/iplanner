@@ -43,7 +43,7 @@ export default function CustomInput(props: CustomInputProps) {
         value={value}
         disabled={disabled}
         onChange={onChange}
-        className={`${className} rounded focus:outline-none`}
+        className={`${className} rounded focus:outline-none border-zinc-300`}
         {...rest}
       />
     </div>

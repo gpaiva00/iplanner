@@ -17,12 +17,12 @@ export default function Dashboard() {
           </Card>
         </a>
 
-        <a href="#" className="w-80">
+        {/* <a href="#" className="w-80">
           <Card imgSrc="/src/assets/images/guests.jpg">
             <h1 className="card-title">Convidados</h1>
             <p className="card-description">Gerencie seus convidados</p>
           </Card>
-        </a>
+        </a> */}
       </div>
       <PageFooter />
     </div>

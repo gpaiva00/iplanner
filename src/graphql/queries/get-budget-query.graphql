@@ -1,0 +1,19 @@
+query GetBudgetQuery($id: ID = "") {
+  budget(where: { id: $id }) {
+    id
+    name
+    imageURL
+    description
+    items {
+      ... on BudgetItem {
+        id
+        name
+        budgetType
+        category
+        imageURL
+        link
+        price
+      }
+    }
+  }
+}

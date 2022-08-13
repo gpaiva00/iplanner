@@ -1,5 +1,12 @@
 import { useState } from 'react'
-import { Budget } from '../interfaces/Budget'
+import budgetCategories from '../common/budgetCategories'
+import budgetTypes from '../common/budgetTypes'
+import {
+  Budget,
+  BudgetType,
+  Category,
+  useFilterBudgetItemsQueryLazyQuery
+} from '../graphql/generated'
 import Button from './Button'
 import CustomInput from './CustomInput'
 import CustomModal from './CustomModal'
@@ -9,14 +16,18 @@ interface FilterModal {
   show: boolean
   onClose: () => void
   budget: Budget
+  setBudget: React.Dispatch<React.SetStateAction<Budget[]>>
 }
 
 export default function FilterModal(props: FilterModal) {
-  const { show, onClose, budget } = props
+  const { show, onClose, budget, setBudget } = props
 
   const [name, setName] = useState('')
-  const [type, setType] = useState('')
-  const [category, setCategory] = useState('')
+  const [type, setType] = useState(BudgetType.Wishlist)
+  const [category, setCategory] = useState(Category.Cama)
+
+  const [filterQuery, { loading: queryLoading }] =
+    useFilterBudgetItemsQueryLazyQuery()
 
   const handleClose = () => {
     setName('')
@@ -25,17 +36,23 @@ export default function FilterModal(props: FilterModal) {
     onClose()
   }
 
-  let filterTimeout: any = null
-
   const handleFilterBy = async () => {
-    if (!name && !type && !category) {
-      alert('Selecione pelo menos um filtro')
-      return
+    try {
+      const { data } = await filterQuery({
+        variables: {
+          budgetID: budget.id,
+          budgetType: type,
+          category,
+          name_contains: name
+        }
+      })
+
+      setBudget({ ...budget, items: data?.budgetItems ?? [] })
+
+      handleClose()
+    } catch (error) {
+      console.error('Error filter by', error)
     }
-
-    //  TODO: filter items
-
-    handleClose()
   }
 
   return (
@@ -60,25 +77,15 @@ export default function FilterModal(props: FilterModal) {
 
           <Select
             label="Categoria"
+            value={category}
             onChange={setCategory}
-            options={[
-              { text: 'Qualquer uma', value: '' },
-              { text: 'Cama', value: 'cama' },
-              { text: 'Banho', value: 'banho' },
-              { text: 'Sala', value: 'sala' },
-              { text: 'Quarto', value: 'quarto' },
-              { text: 'Cozinha', value: 'cozinha' },
-              { text: 'Outros', value: 'outros' }
-            ]}
+            options={budgetCategories}
           />
 
           <Select
             label="Tipo"
-            options={[
-              { text: 'Qualquer um', value: '' },
-              { value: 'wishlist', text: 'Lista de desejos' },
-              { value: 'purchased', text: 'Comprado' }
-            ]}
+            value={type}
+            options={budgetTypes}
             onChange={setType}
           />
         </div>
@@ -90,6 +97,7 @@ export default function FilterModal(props: FilterModal) {
             variant="primary"
             size="full"
             type="submit"
+            isLoading={queryLoading}
           >
             Filtrar
           </Button>

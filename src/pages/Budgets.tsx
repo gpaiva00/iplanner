@@ -35,7 +35,14 @@ export default function Budgets() {
       <DashboardHeader />
 
       <div className="flex flex-1 flex-col w-full">
-        <div className="flex justify-end px-10 py-10">
+        <div className="flex gap-4 justify-end px-10 pt-10 pb-5">
+          <div className="flex flex-col flex-1">
+            <h1 className="title">Orçamentos</h1>
+            <span className="description">
+              {data?.budgets?.length ?? 0} itens
+            </span>
+          </div>
+
           <Button
             onClick={handleAddBudget}
             icon={<Plus weight="bold" size={DEFAULT_ICON_SIZE} />}

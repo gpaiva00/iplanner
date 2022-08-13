@@ -1,5 +1,7 @@
 import currency from 'currency.js'
 import { useState } from 'react'
+import budgetCategories from '../common/budgetCategories'
+import budgetTypes from '../common/budgetTypes'
 import {
   Budget,
   BudgetType,
@@ -144,14 +146,7 @@ export default function AddBudgetItemModal(props: AddBudgetItemModalProps) {
               <Select
                 label="Categoria"
                 onChange={setCategory}
-                options={[
-                  { text: 'Cama', value: Category.Cama },
-                  { text: 'Banho', value: Category.Banho },
-                  { text: 'Sala', value: Category.Sala },
-                  { text: 'Quarto', value: Category.Quarto },
-                  { text: 'Cozinha', value: Category.Cozinha },
-                  { text: 'Outros', value: Category.Outros }
-                ]}
+                options={budgetCategories}
                 required
                 width={56}
               />
@@ -167,10 +162,7 @@ export default function AddBudgetItemModal(props: AddBudgetItemModalProps) {
             <div className="flex items-center justify-between">
               <Select
                 label="Tipo"
-                options={[
-                  { value: BudgetType.Wishlist, text: 'Lista de desejos' },
-                  { value: BudgetType.Purchased, text: 'Comprado' }
-                ]}
+                options={budgetTypes}
                 onChange={setType}
                 required
                 width={32}

@@ -1,6 +1,15 @@
 import { useEffect, useState } from 'react'
 
-import { ArrowSquareOut, Funnel, FunnelSimple, Plus, Tag } from 'phosphor-react'
+import {
+  ArrowSquareOut,
+  Check,
+  Funnel,
+  FunnelSimple,
+  ListBullets,
+  PencilSimple,
+  Plus,
+  Tag
+} from 'phosphor-react'
 import Button from '../components/Button'
 import DashboardHeader from '../components/DashboardHeader'
 import PageFooter from '../components/PageFooter'
@@ -21,8 +30,10 @@ import EditBudgetItemModal from '../components/EditBudgetItemModal'
 import {
   Budget,
   BudgetItem,
-  useGetBudgetItemsQuery
+  useGetBudgetQueryLazyQuery
 } from '../graphql/generated'
+import classNames from 'classnames'
+import EditBudgetModal from '../components/EditBudgetModal'
 
 interface StateProps {
   state: {
@@ -32,26 +43,24 @@ interface StateProps {
 
 export default function BudgetDetail() {
   const { state } = useLocation() as StateProps
-  const [isLoading, setIsLoading] = useState(true)
 
+  const [budget, setBudget] = useState<Budget>(() => ({
+    name: state.budget.name,
+    id: state.budget.id,
+    items: []
+  }))
   const [showAddBudgetItemModal, setShowAddBudgetItemModal] = useState(false)
   const [showEditBudgetItemModal, setShowEditBudgetItemModal] = useState(false)
   const [showFilterModal, setShowFilterModal] = useState(false)
+  const [showEditBudgetModal, setShowEditBudgetModal] = useState(false)
+
   const [editBudgetItem, setEditBudgetItem] = useState<BudgetItem>()
+  const [orderBy, setOrderBy] = useState('price-asc')
 
   const navigate = useNavigate()
 
-  const budget = state?.budget || {
-    id: '',
-    name: '',
-    type: ''
-  }
-
-  const { data, loading: queryLoading } = useGetBudgetItemsQuery({
-    variables: {
-      id: budget.id
-    }
-  })
+  const [getBudgetQuery, { loading: queryLoading }] =
+    useGetBudgetQueryLazyQuery()
 
   const handleAddItem = () => {
     setShowAddBudgetItemModal(true)
@@ -64,10 +73,14 @@ export default function BudgetDetail() {
   const handleOrderBy = (orderBy: 'price-asc' | 'price-desc') => {
     switch (orderBy) {
       case 'price-asc':
-        budget.items.sort((a, b) => a.price - b.price)
+        const ascPrice = [...budget.items].sort((a, b) => a.price - b.price)
+        setBudget({ ...budget, items: ascPrice })
+        setOrderBy('price-asc')
         break
       case 'price-desc':
-        budget.items.sort((a, b) => b.price - a.price)
+        const descPrice = [...budget.items].sort((a, b) => b.price - a.price)
+        setBudget({ ...budget, items: descPrice })
+        setOrderBy('price-desc')
         break
     }
   }
@@ -77,12 +90,31 @@ export default function BudgetDetail() {
     setShowEditBudgetItemModal(true)
   }
 
+  const handleDeleteBudget = async () => {
+    setShowEditBudgetModal(true)
+  }
+
+  const loadBudget = async () => {
+    try {
+      const { data } = await getBudgetQuery({
+        variables: {
+          id: state.budget.id
+        }
+      })
+
+      setBudget(data?.budget)
+    } catch (error) {
+      console.error('Error loading budget', error)
+    }
+  }
+
   useEffect(() => {
-    if (!budget.name) {
+    if (!state.budget.id) {
       navigate('/budgets')
       return
     }
-    setIsLoading(false)
+
+    loadBudget()
   }, [])
 
   return (
@@ -90,20 +122,38 @@ export default function BudgetDetail() {
       <DashboardHeader />
 
       <div className="flex flex-1 flex-col w-full">
-        <div className="flex gap-4 justify-end px-10 pt-10 pb-5">
+        <div className="flex gap-4 justify-end px-10 pt-10 pb-10">
           <div className="flex flex-col flex-1">
             <h1 className="title">{budget?.name}</h1>
             <span className="description">
-              {data?.budgetItems.length} itens &#x2022;
+              {budget.items?.length ?? 0}{' '}
+              {budget.items?.length > 1 ? 'itens' : 'item'} &#x2022;
               {!queryLoading &&
-                ` ${BRL(sumAllPrices(data?.budgetItems)).format()} totais`}
+                ` ${BRL(sumAllPrices(budget.items)).format()} totais`}
             </span>
           </div>
+
+          <Button
+            onClick={handleDeleteBudget}
+            icon={<PencilSimple weight="fill" size={18} />}
+            variant="outline-primary"
+          >
+            Orçamento
+          </Button>
 
           <Dropdown
             label={
               <Button
-                icon={<FunnelSimple weight="bold" size={18} />}
+                icon={
+                  <FunnelSimple
+                    weight="bold"
+                    size={18}
+                    className={classNames({
+                      'rotate-180': orderBy === 'price-asc',
+                      'rotate-0': orderBy === 'price-desc'
+                    })}
+                  />
+                }
                 variant="outline-primary"
               >
                 Ordenar
@@ -113,10 +163,24 @@ export default function BudgetDetail() {
             inline={true}
           >
             <Dropdown.Item onClick={() => handleOrderBy('price-asc')}>
-              Menor preço
+              <div
+                className={classNames('flex gap-2 items-center', {
+                  'text-primary': orderBy === 'price-asc'
+                })}
+              >
+                {orderBy === 'price-asc' && <Check size={12} weight="bold" />}
+                Menor preço
+              </div>
             </Dropdown.Item>
             <Dropdown.Item onClick={() => handleOrderBy('price-desc')}>
-              Menor preço
+              <div
+                className={classNames('flex gap-2 items-center', {
+                  'text-primary': orderBy === 'price-desc'
+                })}
+              >
+                {orderBy === 'price-desc' && <Check size={12} weight="bold" />}
+                Maior preço
+              </div>
             </Dropdown.Item>
           </Dropdown>
 
@@ -136,65 +200,61 @@ export default function BudgetDetail() {
           </Button>
         </div>
 
-        <div className="flex flex-1 flex-wrap gap-8 justify-center items-center px-16 pb-32">
-          {(isLoading || queryLoading) && <Loading />}
+        <div className="flex flex-1 flex-wrap gap-6 justify-center items-center px-16 pb-32">
+          {queryLoading && <Loading />}
 
-          {!(isLoading || queryLoading) && !data?.budgetItems.length && (
+          {!queryLoading && !budget.items?.length && (
             <NoContentPlaceholder
               title="Você ainda não possui itens nesse orçamento"
               description="Clique no botão acima para adicionar um item"
             />
           )}
 
-          {!(isLoading || queryLoading) &&
-            data?.budgetItems.map(budget => {
-              const imageSrc =
-                budget.imageURL || '/src/assets/images/placeholder-image.png'
-
-              return (
-                <div className="w-72 cursor-pointer">
-                  <Card imgSrc={imageSrc}>
-                    <span onClick={() => handleEditCard(budget)}>
-                      <div className="flex flex-1 gap-2 items-center py-1">
-                        <Badge>
-                          <Tag size={10} />
-                          {budget.category}
-                        </Badge>
-                        <Badge
-                          type={
-                            budget.budgetType === 'purchased'
-                              ? 'success'
-                              : 'wishlist'
-                          }
-                        >
-                          {getNameOfBudgetType(budget.budgetType)}
-                        </Badge>
-                      </div>
-                      <p className="budget-card-title">{budget.name}</p>
-                    </span>
-                    <div className="flex">
-                      <div className="flex flex-1">
-                        {budget.link && (
-                          <div className="budget-card-link">
-                            <a
-                              href={budget.link}
-                              target="_blank"
-                              className="font-normal text-sm"
-                            >
-                              {getStoreNameFromURL(budget.link)}
-                            </a>
-                            <ArrowSquareOut size={15} />
-                          </div>
-                        )}
-                      </div>
-                      <p className="font-normal text-zinc-900">
-                        {BRL(budget.price).format()}
-                      </p>
+          {!queryLoading &&
+            budget.items?.map(budget => (
+              <div className="w-72">
+                <Card imgSrc={budget.imageURL}>
+                  <span onClick={() => handleEditCard(budget)}>
+                    <div className="flex flex-1 gap-2 items-center py-1">
+                      <Badge>
+                        <Tag size={11} />
+                        {budget.category}
+                      </Badge>
+                      <Badge
+                        type={
+                          budget.budgetType === 'purchased'
+                            ? 'success'
+                            : 'wishlist'
+                        }
+                      >
+                        <ListBullets size={11} />
+                        {getNameOfBudgetType(budget.budgetType)}
+                      </Badge>
                     </div>
-                  </Card>
-                </div>
-              )
-            })}
+                    <p className="budget-card-title">{budget.name}</p>
+                  </span>
+                  <div className="flex">
+                    <div className="flex flex-1">
+                      {budget.link && (
+                        <div className="budget-card-link">
+                          <a
+                            href={budget.link}
+                            target="_blank"
+                            className="font-normal text-sm"
+                          >
+                            {getStoreNameFromURL(budget.link)}
+                          </a>
+                          <ArrowSquareOut size={15} />
+                        </div>
+                      )}
+                    </div>
+                    <p className="font-normal text-zinc-900">
+                      {BRL(budget.price).format()}
+                    </p>
+                  </div>
+                </Card>
+              </div>
+            ))}
         </div>
       </div>
 
@@ -204,17 +264,22 @@ export default function BudgetDetail() {
         onClose={() => setShowAddBudgetItemModal(false)}
       />
       <EditBudgetItemModal
-        budgetName={budget.name}
+        budgetName={budget?.name}
         budgetItem={editBudgetItem}
         show={showEditBudgetItemModal}
         onClose={() => setShowEditBudgetItemModal(false)}
       />
-      {/* 
       <FilterModal
         budget={budget}
         show={showFilterModal}
         onClose={() => setShowFilterModal(false)}
-      /> */}
+        setBudget={setBudget}
+      />
+      <EditBudgetModal
+        budget={budget}
+        show={showEditBudgetModal}
+        onClose={() => setShowEditBudgetModal(false)}
+      />
       <PageFooter />
     </div>
   )
