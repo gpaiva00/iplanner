@@ -102,7 +102,7 @@ export default function AddBudgetItemModal(props: AddBudgetItemModalProps) {
 
       await publishBudgetItem({
         variables: {
-          id: data.createBudgetItem.id
+          id: data?.createBudgetItem?.id
         }
       })
 
