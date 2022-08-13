@@ -9,7 +9,7 @@ export default function Dashboard() {
 
       <div className="flex flex-1 gap-10 justify-center items-center px-16 pb-16">
         <a href="/budgets" className="w-80">
-          <Card imgSrc="/public/images/finances.jpg">
+          <Card imgSrc="images/finances.jpg">
             <h1 className="card-title">Orçamentos</h1>
             <p className="card-description">
               Todas as suas finanças num só lugar
