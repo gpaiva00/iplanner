@@ -60,7 +60,7 @@ export default function DashboardHeader(props: DashboardHeaderProps) {
           label={
             <Avatar
               alt="Configurações"
-              img="/public/ju-logo.png"
+              img="ju-logo.png"
               rounded={true}
               size="md"
             />
