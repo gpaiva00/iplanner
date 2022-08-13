@@ -4,7 +4,7 @@ import Budgets from './pages/Budgets'
 import Dashboard from './pages/Dashboard'
 
 import Home from './pages/Home'
-import Login from './pages/Login/Login'
+import Login from './pages/Login'
 
 export function Router() {
   return (
