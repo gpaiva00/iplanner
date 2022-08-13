@@ -1,5 +1,4 @@
 import { Route, Routes } from 'react-router-dom'
-import { RequireAuth } from './common/requireAuth'
 import BudgetDetail from './pages/BudgetDetail'
 import Budgets from './pages/Budgets'
 import Dashboard from './pages/Dashboard'
