@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Button from '../../components/Button'
-import CustomInput from '../../components/CustomInput'
-import HomeAvatar from '../../components/HomeAvatar'
-import HomeHeader from '../../components/HomeHeader'
-import { useAuth } from '../../hooks/useAuth'
+import Button from '../components/Button'
+import CustomInput from '../components/CustomInput'
+import HomeAvatar from '../components/HomeAvatar'
+import HomeHeader from '../components/HomeHeader'
+import { useAuth } from '../hooks/useAuth'
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false)
