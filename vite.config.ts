@@ -8,7 +8,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        '/': resolve(__dirname, 'src/pages/Home.tsx'),
+        // '/index': resolve(__dirname, 'src/pages/Home.tsx'),
         '/login': resolve(__dirname, 'src/pages/Login.tsx')
       }
     }
