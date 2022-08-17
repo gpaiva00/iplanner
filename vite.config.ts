@@ -9,7 +9,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         // '/index': resolve(__dirname, 'src/pages/Home.tsx'),
-        '/login': resolve(__dirname, 'src/pages/Login.tsx')
+        login: resolve(__dirname, 'src/pages/Login.tsx')
       }
     }
   }
