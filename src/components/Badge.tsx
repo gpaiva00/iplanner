@@ -24,7 +24,7 @@ export default function Badge(props: BadgeProps) {
         { 'bg-orange-700': type === 'warning' },
         { 'bg-info text-blue-700': type === 'info' },
         { 'bg-gray-500': type === 'light' },
-        { 'bg-gray-900': type === 'dark' },
+        { 'bg-zinc-500': type === 'dark' },
         { 'bg-wishlist text-purple-700': type === 'wishlist' }
       )}
     >

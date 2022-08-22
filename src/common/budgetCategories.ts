@@ -1,11 +1,11 @@
 import { Category } from '../graphql/generated'
 
 export default [
-  { text: 'Cama', value: Category.Cama },
-  { text: 'Banho', value: Category.Banho },
-  { text: 'Sala', value: Category.Sala },
-  { text: 'Quarto', value: Category.Quarto },
-  { text: 'Cozinha', value: Category.Cozinha },
-  { text: 'Roupa', value: Category.Roupa },
-  { text: 'Outros', value: Category.Outros }
+  { text: 'cama', value: Category.Cama },
+  { text: 'banho', value: Category.Banho },
+  { text: 'sala', value: Category.Sala },
+  { text: 'quarto', value: Category.Quarto },
+  { text: 'cozinha', value: Category.Cozinha },
+  { text: 'roupa', value: Category.Roupa },
+  { text: 'outros', value: Category.Outros }
 ]

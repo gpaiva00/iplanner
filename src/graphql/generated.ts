@@ -1603,6 +1603,7 @@ export enum BudgetOrderByInput {
 
 export enum BudgetType {
   Purchased = 'purchased',
+  Saved = 'saved',
   Wishlist = 'wishlist'
 }
 

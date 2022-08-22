@@ -86,30 +86,27 @@ export default function AddBudgetItemModal(props: AddBudgetItemModalProps) {
       return alert('O link do produto é inválido')
 
     try {
-      const newPrice = currency(price.replace(',', '.')).value
+      const newPrice = currency(price, { separator: '.', decimal: ',' }).value
 
-      console.warn({ newPrice })
-      
+      const { data } = await createBudgetItem({
+        variables: {
+          name,
+          price: newPrice,
+          budgetType: type,
+          category,
+          link,
+          imageURL,
+          budgetId: budget.id
+        }
+      })
 
-      // const { data } = await createBudgetItem({
-      //   variables: {
-      //     name,
-      //     price: newPrice,
-      //     budgetType: type,
-      //     category,
-      //     link,
-      //     imageURL,
-      //     budgetId: budget.id
-      //   }
-      // })
+      await publishBudgetItem({
+        variables: {
+          id: data?.createBudgetItem?.id
+        }
+      })
 
-      // await publishBudgetItem({
-      //   variables: {
-      //     id: data?.createBudgetItem?.id
-      //   }
-      // })
-
-      // window.location.reload()
+      window.location.reload()
     } catch (error) {
       console.log('Error create budget item', error)
     }

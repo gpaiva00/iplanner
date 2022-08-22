@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import {
   ArrowSquareOut,
+  BookmarkSimple,
   Check,
   Funnel,
   FunnelSimple,
@@ -107,6 +108,40 @@ export default function BudgetDetail() {
     }
   }
 
+  const renderTotalInBRL = (budgetItems: BudgetItem[]) => {
+    if (budgetItems.findIndex(budget => budget.budgetType === BudgetType.Wishlist) !== -1)
+     return (
+       <span className='flex gap-1 items-center'>
+         <span className='font-bold text-xl'>&#183;</span>
+         {`${BRL(sumAllPrices(budgetItems)).format()} na lista de desejos`}
+       </span>
+     )
+  }
+
+  const renderBadgeType = (budgetType: BudgetType) => {
+    switch (budgetType) {
+      case BudgetType.Purchased:
+        return (
+          <Badge type="success">
+            <Check size={11} />
+            {getNameOfBudgetType(budgetType)}
+          </Badge>
+        )
+      case BudgetType.Wishlist:
+        return (
+          <Badge type="wishlist">
+            <ListBullets size={11} />
+            {getNameOfBudgetType(budgetType)}
+          </Badge>
+        )
+      case BudgetType.Saved:
+        return <Badge type="dark">
+          <BookmarkSimple size={11}/>
+          {getNameOfBudgetType(budgetType)}</Badge>
+    }
+  }
+  
+
   useEffect(() => {
     if (!state.budget.id) {
       navigate('/budgets')
@@ -128,15 +163,7 @@ export default function BudgetDetail() {
               <span className="description gap-1">
                 <span>{`${budget.items?.length ?? 0}`}</span>
                 <span>{`${budget.items?.length > 1 ? 'itens' : 'item'}`}</span>
-                {budget.items.findIndex(
-                  budget => budget.budgetType === BudgetType.Wishlist
-                ) !== -1 && (
-                  <span>
-                    {`${BRL(
-                      sumAllPrices(budget.items)
-                    ).format()} na lista de desejos`}
-                  </span>
-                )}
+                {renderTotalInBRL(budget.items)}
               </span>
             )}
           </div>
@@ -225,18 +252,9 @@ export default function BudgetDetail() {
                   <div className="flex flex-1 gap-2 items-center py-1">
                     <Badge>
                       <Tag size={11} />
-                      {budget.category}
+                      <span className='lowercase'>{budget.category}</span>
                     </Badge>
-                    <Badge
-                      type={
-                        budget.budgetType === 'purchased'
-                          ? 'success'
-                          : 'wishlist'
-                      }
-                    >
-                      <ListBullets size={11} />
-                      {getNameOfBudgetType(budget.budgetType)}
-                    </Badge>
+                    <>{renderBadgeType(budget.budgetType)}</>
                   </div>
                   <p className="budget-card-title">{budget.name}</p>
                 </span>
@@ -255,7 +273,7 @@ export default function BudgetDetail() {
                       </div>
                     )}
                   </div>
-                  <p className="font-normal text-zinc-900">
+                  <p className="font-black text-zinc-900">
                     {BRL(budget.price).format()}
                   </p>
                 </div>
