@@ -229,7 +229,7 @@ export default function EditBudgetItemModal(props: EditBudgetItemModalProps) {
                 <img
                   src={imagePreview}
                   alt="preview"
-                  className="max-w-full max-h-52 rounded"
+                  className="max-w-full max-h-32 rounded"
                   onError={() => setImagePreview('')}
                 />
               </div>

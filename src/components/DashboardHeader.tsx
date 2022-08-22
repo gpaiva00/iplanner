@@ -35,9 +35,9 @@ export default function DashboardHeader(props: DashboardHeaderProps) {
         >
           Orçamentos
         </a>
-        {/* <a href="#" className="header-menu">
+        <a href="#" className="header-menu">
           Convidados
-        </a> */}
+        </a>
       </div>
 
       <div className="flex flex-1 gap-8 justify-end items-center">
@@ -60,7 +60,7 @@ export default function DashboardHeader(props: DashboardHeaderProps) {
           label={
             <Avatar
               alt="Configurações"
-              img="ju-logo.png"
+              img="/ju-logo.png"
               rounded={true}
               size="md"
             />

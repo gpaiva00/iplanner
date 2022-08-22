@@ -1,20 +1,21 @@
-import { Card } from 'flowbite-react'
 import { Plus } from 'phosphor-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { DEFAULT_ICON_SIZE } from '../common/iconSizes'
 import AddBudgetModal from '../components/AddBudgetModal'
 import Button from '../components/Button'
+import Card from '../components/Card'
 import DashboardHeader from '../components/DashboardHeader'
 import Loading from '../components/Loading'
 import NoContentPlaceholder from '../components/NoContentPlaceholder'
 import PageFooter from '../components/PageFooter'
-import { Budget, useGetBudgetsQuery } from '../graphql/generated'
+import { Budget, useGetBudgetsLazyQuery } from '../graphql/generated'
 
 export default function Budgets() {
   const [showAddBudgetModal, setShowAddBudgetModal] = useState(false)
+  const [budgets, setBudgets] = useState<Budget[]>([])
 
-  const { data, loading } = useGetBudgetsQuery()
+  const [getBudgetsQuery, { loading: queryLoading }] = useGetBudgetsLazyQuery()
 
   const navigate = useNavigate()
 
@@ -30,17 +31,33 @@ export default function Budgets() {
     })
   }
 
+  const getBudgets = async () => {
+    try {
+      const { data } = await getBudgetsQuery()
+      setBudgets(data.budgets)
+    } catch (error) {
+      console.log('Error retrieving budges', error)
+    }
+  }
+
+  useEffect(() => {
+    getBudgets()
+  }, [])
+
   return (
     <div className="default-background">
       <DashboardHeader />
 
       <div className="flex flex-1 flex-col w-full">
-        <div className="flex gap-4 justify-end px-10 pt-10 pb-5">
+        <div className="flex gap-4 justify-end px-10 py-10">
           <div className="flex flex-col flex-1">
             <h1 className="title">Orçamentos</h1>
-            <span className="description">
-              {data?.budgets?.length ?? 0} itens
-            </span>
+            {!queryLoading && (
+              <span className="description gap-1">
+                <span>{`${budgets?.length ?? 0}`}</span>
+                <span>{`${budgets?.length > 1 ? 'itens' : 'item'}`}</span>
+              </span>
+            )}
           </div>
 
           <Button
@@ -52,26 +69,26 @@ export default function Budgets() {
         </div>
 
         <div className="flex flex-1 flex-wrap gap-8 justify-center items-center px-16 pb-32">
-          {loading && <Loading />}
+          {queryLoading && <Loading />}
 
-          {!loading && !data?.budgets.length && (
+          {!queryLoading && !budgets?.length && (
             <NoContentPlaceholder
               title="Você ainda não possui nenhum orçamento"
               description="Clique no botão acima para criar um orçamento"
             />
           )}
 
-          {!loading &&
-            data?.budgets.map(budget => (
-              <div key={budget.id} className="w-80 cursor-pointer">
-                <Card
+          {!queryLoading &&
+            budgets?.map(budget => (
+              <Card imgSrc={budget.imageURL} key={budget.id}>
+                <h1
                   onClick={() => handleBudgetClick(budget)}
-                  imgSrc={budget.imageURL}
+                  className="card-title cursor-pointer"
                 >
-                  <h1 className="card-title">{budget.name}</h1>
-                  <p className="card-description">{budget.description}</p>
-                </Card>
-              </div>
+                  {budget.name}
+                </h1>
+                <p className="card-description">{budget.description}</p>
+              </Card>
             ))}
         </div>
       </div>

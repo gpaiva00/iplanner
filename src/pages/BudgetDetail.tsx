@@ -14,7 +14,7 @@ import Button from '../components/Button'
 import DashboardHeader from '../components/DashboardHeader'
 import PageFooter from '../components/PageFooter'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Card, Dropdown } from 'flowbite-react'
+import { Dropdown } from 'flowbite-react'
 import {
   BRL,
   getNameOfBudgetType,
@@ -30,10 +30,13 @@ import EditBudgetItemModal from '../components/EditBudgetItemModal'
 import {
   Budget,
   BudgetItem,
+  BudgetType,
   useGetBudgetQueryLazyQuery
 } from '../graphql/generated'
 import classNames from 'classnames'
 import EditBudgetModal from '../components/EditBudgetModal'
+import Card from '../components/Card'
+import { DEFAULT_BUDGET } from '../common/defaultBudget'
 
 interface StateProps {
   state: {
@@ -44,11 +47,7 @@ interface StateProps {
 export default function BudgetDetail() {
   const { state } = useLocation() as StateProps
 
-  const [budget, setBudget] = useState<Budget>(() => ({
-    name: state.budget.name,
-    id: state.budget.id,
-    items: []
-  }))
+  const [budget, setBudget] = useState<Budget>(DEFAULT_BUDGET)
   const [showAddBudgetItemModal, setShowAddBudgetItemModal] = useState(false)
   const [showEditBudgetItemModal, setShowEditBudgetItemModal] = useState(false)
   const [showFilterModal, setShowFilterModal] = useState(false)
@@ -122,15 +121,24 @@ export default function BudgetDetail() {
       <DashboardHeader />
 
       <div className="flex flex-1 flex-col w-full">
-        <div className="flex gap-4 justify-end px-10 pt-10 pb-10">
+        <div className="flex gap-4 justify-end px-10 py-10">
           <div className="flex flex-col flex-1">
             <h1 className="title">{budget?.name}</h1>
-            <span className="description">
-              {budget.items?.length ?? 0}{' '}
-              {budget.items?.length > 1 ? 'itens' : 'item'} &#x2022;
-              {!queryLoading &&
-                ` ${BRL(sumAllPrices(budget.items)).format()} totais`}
-            </span>
+            {!queryLoading && (
+              <span className="description gap-1">
+                <span>{`${budget.items?.length ?? 0}`}</span>
+                <span>{`${budget.items?.length > 1 ? 'itens' : 'item'}`}</span>
+                {budget.items.findIndex(
+                  budget => budget.budgetType === BudgetType.Wishlist
+                ) !== -1 && (
+                  <span>
+                    {`${BRL(
+                      sumAllPrices(budget.items)
+                    ).format()} na lista de desejos`}
+                  </span>
+                )}
+              </span>
+            )}
           </div>
 
           <Button
@@ -212,48 +220,46 @@ export default function BudgetDetail() {
 
           {!queryLoading &&
             budget.items?.map(budget => (
-              <div className="w-72">
-                <Card imgSrc={budget.imageURL}>
-                  <span onClick={() => handleEditCard(budget)}>
-                    <div className="flex flex-1 gap-2 items-center py-1">
-                      <Badge>
-                        <Tag size={11} />
-                        {budget.category}
-                      </Badge>
-                      <Badge
-                        type={
-                          budget.budgetType === 'purchased'
-                            ? 'success'
-                            : 'wishlist'
-                        }
-                      >
-                        <ListBullets size={11} />
-                        {getNameOfBudgetType(budget.budgetType)}
-                      </Badge>
-                    </div>
-                    <p className="budget-card-title">{budget.name}</p>
-                  </span>
-                  <div className="flex">
-                    <div className="flex flex-1">
-                      {budget.link && (
-                        <div className="budget-card-link">
-                          <a
-                            href={budget.link}
-                            target="_blank"
-                            className="font-normal text-sm"
-                          >
-                            {getStoreNameFromURL(budget.link)}
-                          </a>
-                          <ArrowSquareOut size={15} />
-                        </div>
-                      )}
-                    </div>
-                    <p className="font-normal text-zinc-900">
-                      {BRL(budget.price).format()}
-                    </p>
+              <Card imgSrc={budget.imageURL} key={budget.id}>
+                <span onClick={() => handleEditCard(budget)}>
+                  <div className="flex flex-1 gap-2 items-center py-1">
+                    <Badge>
+                      <Tag size={11} />
+                      {budget.category}
+                    </Badge>
+                    <Badge
+                      type={
+                        budget.budgetType === 'purchased'
+                          ? 'success'
+                          : 'wishlist'
+                      }
+                    >
+                      <ListBullets size={11} />
+                      {getNameOfBudgetType(budget.budgetType)}
+                    </Badge>
                   </div>
-                </Card>
-              </div>
+                  <p className="budget-card-title">{budget.name}</p>
+                </span>
+                <div className="flex">
+                  <div className="flex flex-1">
+                    {budget.link && (
+                      <div className="budget-card-link">
+                        <a
+                          href={budget.link}
+                          target="_blank"
+                          className="font-normal text-sm"
+                        >
+                          {getStoreNameFromURL(budget.link)}
+                        </a>
+                        <ArrowSquareOut size={15} />
+                      </div>
+                    )}
+                  </div>
+                  <p className="font-normal text-zinc-900">
+                    {BRL(budget.price).format()}
+                  </p>
+                </div>
+              </Card>
             ))}
         </div>
       </div>

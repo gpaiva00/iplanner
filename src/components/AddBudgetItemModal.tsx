@@ -88,25 +88,28 @@ export default function AddBudgetItemModal(props: AddBudgetItemModalProps) {
     try {
       const newPrice = currency(price.replace(',', '.')).value
 
-      const { data } = await createBudgetItem({
-        variables: {
-          name,
-          price: newPrice,
-          budgetType: type,
-          category,
-          link,
-          imageURL,
-          budgetId: budget.id
-        }
-      })
+      console.warn({ newPrice })
+      
 
-      await publishBudgetItem({
-        variables: {
-          id: data?.createBudgetItem?.id
-        }
-      })
+      // const { data } = await createBudgetItem({
+      //   variables: {
+      //     name,
+      //     price: newPrice,
+      //     budgetType: type,
+      //     category,
+      //     link,
+      //     imageURL,
+      //     budgetId: budget.id
+      //   }
+      // })
 
-      window.location.reload()
+      // await publishBudgetItem({
+      //   variables: {
+      //     id: data?.createBudgetItem?.id
+      //   }
+      // })
+
+      // window.location.reload()
     } catch (error) {
       console.log('Error create budget item', error)
     }

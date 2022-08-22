@@ -112,7 +112,7 @@ export default function EditBudgetModal(props: EditBudgetProps) {
         }
       })
 
-      navigate('/budgets')
+      window.location.href = '/budgets'
     } catch (error) {
       console.error('Error deleting Budget', error)
     }
