@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {
   Budget,
   useDeleteBudgetMutationMutation,
@@ -32,8 +31,6 @@ export default function EditBudgetModal(props: EditBudgetProps) {
     useDeleteBudgetMutationMutation()
   const [publishBudget, { loading: publishLoading }] =
     usePublishBudgetMutation()
-
-  const navigate = useNavigate()
 
   const handleClose = () => {
     onClose()

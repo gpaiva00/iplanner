@@ -1,15 +1,13 @@
 import classNames from 'classnames'
 import { Avatar, Dropdown } from 'flowbite-react'
-import { Bell, Notification } from 'phosphor-react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Bell } from 'phosphor-react'
+import { useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 
 interface DashboardHeaderProps {}
 
 export default function DashboardHeader(props: DashboardHeaderProps) {
   const { pathname } = useLocation()
-  const navigate = useNavigate()
-
   const { logout } = useAuth()
 
   return (
@@ -35,7 +33,12 @@ export default function DashboardHeader(props: DashboardHeaderProps) {
         >
           Orçamentos
         </a>
-        <a href="#" className="header-menu">
+        <a
+          href="/guestsList"
+          className={classNames('header-menu', {
+            'header-menu-selected': pathname.includes('guest')
+          })}
+        >
           Convidados
         </a>
       </div>

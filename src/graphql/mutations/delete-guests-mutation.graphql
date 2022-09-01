@@ -1,0 +1,5 @@
+mutation DeleteGuests($ids: [ID] = "") {
+  deleteManyGuests(where: { id_in: $ids }) {
+    count
+  }
+}

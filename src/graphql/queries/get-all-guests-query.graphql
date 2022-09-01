@@ -1,0 +1,10 @@
+query GetAllGuest {
+  guests {
+    id
+    name
+    list {
+      listName
+      imageUrl
+    }
+  }
+}

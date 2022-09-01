@@ -1,0 +1,17 @@
+mutation CreateGuest(
+  $listId: ID = ""
+  $name: String = ""
+  $phone: String = ""
+  $confirmationCode: String = ""
+) {
+  createGuest(
+    data: {
+      name: $name
+      phone: $phone
+      confirmationCode: $confirmationCode
+      list: { connect: { id: $listId } }
+    }
+  ) {
+    id
+  }
+}

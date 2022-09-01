@@ -1,0 +1,8 @@
+mutation CreateGuestsList($data: GuestListCreateInput = {}) {
+  createGuestList(data: $data) {
+    description
+    id
+    imageUrl
+    listName
+  }
+}

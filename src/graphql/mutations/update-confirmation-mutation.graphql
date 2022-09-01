@@ -1,0 +1,8 @@
+mutation UpdateConfirmation($response: Boolean = false, $guestId: ID = "") {
+  updateGuest(data: { response: $response }, where: { id: $guestId }) {
+    id
+  }
+  publishGuest(where: { id: $guestId }) {
+    id
+  }
+}

@@ -38,6 +38,7 @@ import classNames from 'classnames'
 import EditBudgetModal from '../components/EditBudgetModal'
 import Card from '../components/Card'
 import { DEFAULT_BUDGET } from '../common/defaultBudget'
+import { SMALL_ICON_SIZE } from '../common/iconSizes'
 
 interface StateProps {
   state: {
@@ -109,13 +110,17 @@ export default function BudgetDetail() {
   }
 
   const renderTotalInBRL = (budgetItems: BudgetItem[]) => {
-    if (budgetItems.findIndex(budget => budget.budgetType === BudgetType.Wishlist) !== -1)
-     return (
-       <span className='flex gap-1 items-center'>
-         <span className='font-bold text-xl'>&#183;</span>
-         {`${BRL(sumAllPrices(budgetItems)).format()} na lista de desejos`}
-       </span>
-     )
+    if (
+      budgetItems.findIndex(
+        budget => budget.budgetType === BudgetType.Wishlist
+      ) !== -1
+    )
+      return (
+        <span className="flex gap-1 items-center">
+          <span className="font-bold text-xl">&#183;</span>
+          {`${BRL(sumAllPrices(budgetItems)).format()} na lista de desejos`}
+        </span>
+      )
   }
 
   const renderBadgeType = (budgetType: BudgetType) => {
@@ -123,24 +128,26 @@ export default function BudgetDetail() {
       case BudgetType.Purchased:
         return (
           <Badge type="success">
-            <Check size={11} />
+            <Check size={SMALL_ICON_SIZE} />
             {getNameOfBudgetType(budgetType)}
           </Badge>
         )
       case BudgetType.Wishlist:
         return (
           <Badge type="wishlist">
-            <ListBullets size={11} />
+            <ListBullets size={SMALL_ICON_SIZE} />
             {getNameOfBudgetType(budgetType)}
           </Badge>
         )
       case BudgetType.Saved:
-        return <Badge type="dark">
-          <BookmarkSimple size={11}/>
-          {getNameOfBudgetType(budgetType)}</Badge>
+        return (
+          <Badge type="dark">
+            <BookmarkSimple size={SMALL_ICON_SIZE} />
+            {getNameOfBudgetType(budgetType)}
+          </Badge>
+        )
     }
   }
-  
 
   useEffect(() => {
     if (!state.budget.id) {
@@ -252,7 +259,7 @@ export default function BudgetDetail() {
                   <div className="flex flex-1 gap-2 items-center py-1">
                     <Badge>
                       <Tag size={11} />
-                      <span className='lowercase'>{budget.category}</span>
+                      <span className="lowercase">{budget.category}</span>
                     </Badge>
                     <>{renderBadgeType(budget.budgetType)}</>
                   </div>

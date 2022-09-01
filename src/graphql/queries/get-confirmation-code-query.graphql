@@ -1,7 +1,0 @@
-query GetConfirmationCodeQuery(
-  $where: ConfirmationWhereUniqueInput = { code: "" }
-) {
-  confirmation(where: $where) {
-    guestName
-  }
-}

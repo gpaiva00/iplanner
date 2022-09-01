@@ -1,0 +1,5 @@
+mutation PublishGuestList($id: ID!) {
+  publishGuestList(where: { id: $id }) {
+    id
+  }
+}

@@ -1,0 +1,7 @@
+query getGuestsLists {
+  guestLists {
+    id
+    listName
+    imageUrl
+  }
+}

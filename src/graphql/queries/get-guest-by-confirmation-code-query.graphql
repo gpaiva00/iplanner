@@ -1,0 +1,6 @@
+query GetGuestByConfirmationCode($confirmationCode: String = "") {
+  guest(where: { confirmationCode: $confirmationCode }) {
+    id
+    name
+  }
+}

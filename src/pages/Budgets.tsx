@@ -19,9 +19,7 @@ export default function Budgets() {
 
   const navigate = useNavigate()
 
-  const handleAddBudget = () => {
-    setShowAddBudgetModal(true)
-  }
+  const handleAddBudget = () => setShowAddBudgetModal(true)
 
   const handleBudgetClick = (budget: Budget) => {
     navigate('/budget/detail', {
