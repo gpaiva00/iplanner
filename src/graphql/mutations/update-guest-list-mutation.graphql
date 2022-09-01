@@ -1,0 +1,16 @@
+mutation UpdateGuestList(
+  $id: ID!
+  $listName: String = ""
+  $imageUrl: String = ""
+) {
+  updateGuestList(
+    data: { imageUrl: $imageUrl, listName: $listName }
+    where: { id: $id }
+  ) {
+    id
+  }
+
+  publishGuestList(where: { id: $id }) {
+    id
+  }
+}

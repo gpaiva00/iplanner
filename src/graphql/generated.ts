@@ -1849,452 +1849,6 @@ export type ColorInput = {
   rgba?: InputMaybe<RgbaInput>;
 };
 
-export type Confirmation = Node & {
-  __typename?: 'Confirmation';
-  code: Scalars['String'];
-  /** The time the document was created */
-  createdAt: Scalars['DateTime'];
-  /** User that created this document */
-  createdBy?: Maybe<User>;
-  /** Get the document in other stages */
-  documentInStages: Array<Confirmation>;
-  guestName?: Maybe<Scalars['String']>;
-  /** List of Confirmation versions */
-  history: Array<Version>;
-  /** The unique identifier */
-  id: Scalars['ID'];
-  /** The time the document was published. Null on documents in draft stage. */
-  publishedAt?: Maybe<Scalars['DateTime']>;
-  /** User that last published this document */
-  publishedBy?: Maybe<User>;
-  scheduledIn: Array<ScheduledOperation>;
-  /** System stage field */
-  stage: Stage;
-  /** The time the document was updated */
-  updatedAt: Scalars['DateTime'];
-  /** User that last updated this document */
-  updatedBy?: Maybe<User>;
-};
-
-
-export type ConfirmationCreatedByArgs = {
-  locales?: InputMaybe<Array<Locale>>;
-};
-
-
-export type ConfirmationDocumentInStagesArgs = {
-  includeCurrent?: Scalars['Boolean'];
-  inheritLocale?: Scalars['Boolean'];
-  stages?: Array<Stage>;
-};
-
-
-export type ConfirmationHistoryArgs = {
-  limit?: Scalars['Int'];
-  skip?: Scalars['Int'];
-  stageOverride?: InputMaybe<Stage>;
-};
-
-
-export type ConfirmationPublishedByArgs = {
-  locales?: InputMaybe<Array<Locale>>;
-};
-
-
-export type ConfirmationScheduledInArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  locales?: InputMaybe<Array<Locale>>;
-  skip?: InputMaybe<Scalars['Int']>;
-  where?: InputMaybe<ScheduledOperationWhereInput>;
-};
-
-
-export type ConfirmationUpdatedByArgs = {
-  locales?: InputMaybe<Array<Locale>>;
-};
-
-export type ConfirmationConnectInput = {
-  /** Allow to specify document position in list of connected documents, will default to appending at end of list */
-  position?: InputMaybe<ConnectPositionInput>;
-  /** Document to connect */
-  where: ConfirmationWhereUniqueInput;
-};
-
-/** A connection to a list of items. */
-export type ConfirmationConnection = {
-  __typename?: 'ConfirmationConnection';
-  aggregate: Aggregate;
-  /** A list of edges. */
-  edges: Array<ConfirmationEdge>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-};
-
-export type ConfirmationCreateInput = {
-  code: Scalars['String'];
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  guestName?: InputMaybe<Scalars['String']>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type ConfirmationCreateManyInlineInput = {
-  /** Connect multiple existing Confirmation documents */
-  connect?: InputMaybe<Array<ConfirmationWhereUniqueInput>>;
-  /** Create and connect multiple existing Confirmation documents */
-  create?: InputMaybe<Array<ConfirmationCreateInput>>;
-};
-
-export type ConfirmationCreateOneInlineInput = {
-  /** Connect one existing Confirmation document */
-  connect?: InputMaybe<ConfirmationWhereUniqueInput>;
-  /** Create and connect one Confirmation document */
-  create?: InputMaybe<ConfirmationCreateInput>;
-};
-
-/** An edge in a connection. */
-export type ConfirmationEdge = {
-  __typename?: 'ConfirmationEdge';
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  node: Confirmation;
-};
-
-/** Identifies documents */
-export type ConfirmationManyWhereInput = {
-  /** Logical AND on all given filters. */
-  AND?: InputMaybe<Array<ConfirmationWhereInput>>;
-  /** Logical NOT on all given filters combined by AND. */
-  NOT?: InputMaybe<Array<ConfirmationWhereInput>>;
-  /** Logical OR on all given filters. */
-  OR?: InputMaybe<Array<ConfirmationWhereInput>>;
-  /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  code?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  code_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  code_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  code_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values that are not equal to given value. */
-  code_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  code_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  code_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  code_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  code_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  code_starts_with?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
-  /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not equal to given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  createdBy?: InputMaybe<UserWhereInput>;
-  guestName?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  guestName_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  guestName_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  guestName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values that are not equal to given value. */
-  guestName_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  guestName_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  guestName_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  guestName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  guestName_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  guestName_starts_with?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
-  /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
-  /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
-  /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  /** All values that are not equal to given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
-  /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
-  /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
-  /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
-  /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
-  /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not equal to given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  publishedBy?: InputMaybe<UserWhereInput>;
-  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
-  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
-  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
-  /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not equal to given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  updatedBy?: InputMaybe<UserWhereInput>;
-};
-
-export enum ConfirmationOrderByInput {
-  CodeAsc = 'code_ASC',
-  CodeDesc = 'code_DESC',
-  CreatedAtAsc = 'createdAt_ASC',
-  CreatedAtDesc = 'createdAt_DESC',
-  GuestNameAsc = 'guestName_ASC',
-  GuestNameDesc = 'guestName_DESC',
-  IdAsc = 'id_ASC',
-  IdDesc = 'id_DESC',
-  PublishedAtAsc = 'publishedAt_ASC',
-  PublishedAtDesc = 'publishedAt_DESC',
-  UpdatedAtAsc = 'updatedAt_ASC',
-  UpdatedAtDesc = 'updatedAt_DESC'
-}
-
-export type ConfirmationUpdateInput = {
-  code?: InputMaybe<Scalars['String']>;
-  guestName?: InputMaybe<Scalars['String']>;
-};
-
-export type ConfirmationUpdateManyInlineInput = {
-  /** Connect multiple existing Confirmation documents */
-  connect?: InputMaybe<Array<ConfirmationConnectInput>>;
-  /** Create and connect multiple Confirmation documents */
-  create?: InputMaybe<Array<ConfirmationCreateInput>>;
-  /** Delete multiple Confirmation documents */
-  delete?: InputMaybe<Array<ConfirmationWhereUniqueInput>>;
-  /** Disconnect multiple Confirmation documents */
-  disconnect?: InputMaybe<Array<ConfirmationWhereUniqueInput>>;
-  /** Override currently-connected documents with multiple existing Confirmation documents */
-  set?: InputMaybe<Array<ConfirmationWhereUniqueInput>>;
-  /** Update multiple Confirmation documents */
-  update?: InputMaybe<Array<ConfirmationUpdateWithNestedWhereUniqueInput>>;
-  /** Upsert multiple Confirmation documents */
-  upsert?: InputMaybe<Array<ConfirmationUpsertWithNestedWhereUniqueInput>>;
-};
-
-export type ConfirmationUpdateManyInput = {
-  /** No fields in updateMany data input */
-  _?: InputMaybe<Scalars['String']>;
-};
-
-export type ConfirmationUpdateManyWithNestedWhereInput = {
-  /** Update many input */
-  data: ConfirmationUpdateManyInput;
-  /** Document search */
-  where: ConfirmationWhereInput;
-};
-
-export type ConfirmationUpdateOneInlineInput = {
-  /** Connect existing Confirmation document */
-  connect?: InputMaybe<ConfirmationWhereUniqueInput>;
-  /** Create and connect one Confirmation document */
-  create?: InputMaybe<ConfirmationCreateInput>;
-  /** Delete currently connected Confirmation document */
-  delete?: InputMaybe<Scalars['Boolean']>;
-  /** Disconnect currently connected Confirmation document */
-  disconnect?: InputMaybe<Scalars['Boolean']>;
-  /** Update single Confirmation document */
-  update?: InputMaybe<ConfirmationUpdateWithNestedWhereUniqueInput>;
-  /** Upsert single Confirmation document */
-  upsert?: InputMaybe<ConfirmationUpsertWithNestedWhereUniqueInput>;
-};
-
-export type ConfirmationUpdateWithNestedWhereUniqueInput = {
-  /** Document to update */
-  data: ConfirmationUpdateInput;
-  /** Unique document search */
-  where: ConfirmationWhereUniqueInput;
-};
-
-export type ConfirmationUpsertInput = {
-  /** Create document if it didn't exist */
-  create: ConfirmationCreateInput;
-  /** Update document if it exists */
-  update: ConfirmationUpdateInput;
-};
-
-export type ConfirmationUpsertWithNestedWhereUniqueInput = {
-  /** Upsert data */
-  data: ConfirmationUpsertInput;
-  /** Unique document search */
-  where: ConfirmationWhereUniqueInput;
-};
-
-/** Identifies documents */
-export type ConfirmationWhereInput = {
-  /** Logical AND on all given filters. */
-  AND?: InputMaybe<Array<ConfirmationWhereInput>>;
-  /** Logical NOT on all given filters combined by AND. */
-  NOT?: InputMaybe<Array<ConfirmationWhereInput>>;
-  /** Logical OR on all given filters. */
-  OR?: InputMaybe<Array<ConfirmationWhereInput>>;
-  /** Contains search across all appropriate fields. */
-  _search?: InputMaybe<Scalars['String']>;
-  code?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  code_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  code_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  code_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values that are not equal to given value. */
-  code_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  code_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  code_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  code_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  code_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  code_starts_with?: InputMaybe<Scalars['String']>;
-  createdAt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than the given value. */
-  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than or equal the given value. */
-  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are contained in given list. */
-  createdAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  /** All values less than the given value. */
-  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
-  /** All values less than or equal the given value. */
-  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not equal to given value. */
-  createdAt_not?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not contained in given list. */
-  createdAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  createdBy?: InputMaybe<UserWhereInput>;
-  guestName?: InputMaybe<Scalars['String']>;
-  /** All values containing the given string. */
-  guestName_contains?: InputMaybe<Scalars['String']>;
-  /** All values ending with the given string. */
-  guestName_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are contained in given list. */
-  guestName_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values that are not equal to given value. */
-  guestName_not?: InputMaybe<Scalars['String']>;
-  /** All values not containing the given string. */
-  guestName_not_contains?: InputMaybe<Scalars['String']>;
-  /** All values not ending with the given string */
-  guestName_not_ends_with?: InputMaybe<Scalars['String']>;
-  /** All values that are not contained in given list. */
-  guestName_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** All values not starting with the given string. */
-  guestName_not_starts_with?: InputMaybe<Scalars['String']>;
-  /** All values starting with the given string. */
-  guestName_starts_with?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
-  /** All values containing the given string. */
-  id_contains?: InputMaybe<Scalars['ID']>;
-  /** All values ending with the given string. */
-  id_ends_with?: InputMaybe<Scalars['ID']>;
-  /** All values that are contained in given list. */
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  /** All values that are not equal to given value. */
-  id_not?: InputMaybe<Scalars['ID']>;
-  /** All values not containing the given string. */
-  id_not_contains?: InputMaybe<Scalars['ID']>;
-  /** All values not ending with the given string */
-  id_not_ends_with?: InputMaybe<Scalars['ID']>;
-  /** All values that are not contained in given list. */
-  id_not_in?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  /** All values not starting with the given string. */
-  id_not_starts_with?: InputMaybe<Scalars['ID']>;
-  /** All values starting with the given string. */
-  id_starts_with?: InputMaybe<Scalars['ID']>;
-  publishedAt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than the given value. */
-  publishedAt_gt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than or equal the given value. */
-  publishedAt_gte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are contained in given list. */
-  publishedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  /** All values less than the given value. */
-  publishedAt_lt?: InputMaybe<Scalars['DateTime']>;
-  /** All values less than or equal the given value. */
-  publishedAt_lte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not equal to given value. */
-  publishedAt_not?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not contained in given list. */
-  publishedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  publishedBy?: InputMaybe<UserWhereInput>;
-  scheduledIn_every?: InputMaybe<ScheduledOperationWhereInput>;
-  scheduledIn_none?: InputMaybe<ScheduledOperationWhereInput>;
-  scheduledIn_some?: InputMaybe<ScheduledOperationWhereInput>;
-  updatedAt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than the given value. */
-  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
-  /** All values greater than or equal the given value. */
-  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are contained in given list. */
-  updatedAt_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  /** All values less than the given value. */
-  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
-  /** All values less than or equal the given value. */
-  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not equal to given value. */
-  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
-  /** All values that are not contained in given list. */
-  updatedAt_not_in?: InputMaybe<Array<InputMaybe<Scalars['DateTime']>>>;
-  updatedBy?: InputMaybe<UserWhereInput>;
-};
-
-/** References Confirmation record uniquely */
-export type ConfirmationWhereUniqueInput = {
-  code?: InputMaybe<Scalars['String']>;
-  guestName?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
-};
-
 export type ConnectPositionInput = {
   /** Connect document after specified document */
   after?: InputMaybe<Scalars['ID']>;
@@ -3535,8 +3089,6 @@ export type Mutation = {
   createBudget?: Maybe<Budget>;
   /** Create one budgetItem */
   createBudgetItem?: Maybe<BudgetItem>;
-  /** Create one confirmation */
-  createConfirmation?: Maybe<Confirmation>;
   /** Create one guest */
   createGuest?: Maybe<Guest>;
   /** Create one guestList */
@@ -3549,8 +3101,6 @@ export type Mutation = {
   deleteBudget?: Maybe<Budget>;
   /** Delete one budgetItem from _all_ existing stages. Returns deleted document. */
   deleteBudgetItem?: Maybe<BudgetItem>;
-  /** Delete one confirmation from _all_ existing stages. Returns deleted document. */
-  deleteConfirmation?: Maybe<Confirmation>;
   /** Delete one guest from _all_ existing stages. Returns deleted document. */
   deleteGuest?: Maybe<Guest>;
   /** Delete one guestList from _all_ existing stages. Returns deleted document. */
@@ -3577,13 +3127,6 @@ export type Mutation = {
   /** Delete many Budget documents, return deleted documents */
   deleteManyBudgetsConnection: BudgetConnection;
   /**
-   * Delete many Confirmation documents
-   * @deprecated Please use the new paginated many mutation (deleteManyConfirmationsConnection)
-   */
-  deleteManyConfirmations: BatchPayload;
-  /** Delete many Confirmation documents, return deleted documents */
-  deleteManyConfirmationsConnection: ConfirmationConnection;
-  /**
    * Delete many GuestList documents
    * @deprecated Please use the new paginated many mutation (deleteManyGuestListsConnection)
    */
@@ -3607,8 +3150,6 @@ export type Mutation = {
   publishBudget?: Maybe<Budget>;
   /** Publish one budgetItem */
   publishBudgetItem?: Maybe<BudgetItem>;
-  /** Publish one confirmation */
-  publishConfirmation?: Maybe<Confirmation>;
   /** Publish one guest */
   publishGuest?: Maybe<Guest>;
   /** Publish one guestList */
@@ -3635,13 +3176,6 @@ export type Mutation = {
   /** Publish many Budget documents */
   publishManyBudgetsConnection: BudgetConnection;
   /**
-   * Publish many Confirmation documents
-   * @deprecated Please use the new paginated many mutation (publishManyConfirmationsConnection)
-   */
-  publishManyConfirmations: BatchPayload;
-  /** Publish many Confirmation documents */
-  publishManyConfirmationsConnection: ConfirmationConnection;
-  /**
    * Publish many GuestList documents
    * @deprecated Please use the new paginated many mutation (publishManyGuestListsConnection)
    */
@@ -3661,8 +3195,6 @@ export type Mutation = {
   schedulePublishBudget?: Maybe<Budget>;
   /** Schedule to publish one budgetItem */
   schedulePublishBudgetItem?: Maybe<BudgetItem>;
-  /** Schedule to publish one confirmation */
-  schedulePublishConfirmation?: Maybe<Confirmation>;
   /** Schedule to publish one guest */
   schedulePublishGuest?: Maybe<Guest>;
   /** Schedule to publish one guestList */
@@ -3673,8 +3205,6 @@ export type Mutation = {
   scheduleUnpublishBudget?: Maybe<Budget>;
   /** Unpublish one budgetItem from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishBudgetItem?: Maybe<BudgetItem>;
-  /** Unpublish one confirmation from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
-  scheduleUnpublishConfirmation?: Maybe<Confirmation>;
   /** Unpublish one guest from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   scheduleUnpublishGuest?: Maybe<Guest>;
   /** Unpublish one guestList from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -3685,8 +3215,6 @@ export type Mutation = {
   unpublishBudget?: Maybe<Budget>;
   /** Unpublish one budgetItem from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishBudgetItem?: Maybe<BudgetItem>;
-  /** Unpublish one confirmation from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
-  unpublishConfirmation?: Maybe<Confirmation>;
   /** Unpublish one guest from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
   unpublishGuest?: Maybe<Guest>;
   /** Unpublish one guestList from selected stages. Unpublish either the complete document with its relations, localizations and base data or specific localizations only. */
@@ -3713,13 +3241,6 @@ export type Mutation = {
   /** Find many Budget documents that match criteria in specified stage and unpublish from target stages */
   unpublishManyBudgetsConnection: BudgetConnection;
   /**
-   * Unpublish many Confirmation documents
-   * @deprecated Please use the new paginated many mutation (unpublishManyConfirmationsConnection)
-   */
-  unpublishManyConfirmations: BatchPayload;
-  /** Find many Confirmation documents that match criteria in specified stage and unpublish from target stages */
-  unpublishManyConfirmationsConnection: ConfirmationConnection;
-  /**
    * Unpublish many GuestList documents
    * @deprecated Please use the new paginated many mutation (unpublishManyGuestListsConnection)
    */
@@ -3739,8 +3260,6 @@ export type Mutation = {
   updateBudget?: Maybe<Budget>;
   /** Update one budgetItem */
   updateBudgetItem?: Maybe<BudgetItem>;
-  /** Update one confirmation */
-  updateConfirmation?: Maybe<Confirmation>;
   /** Update one guest */
   updateGuest?: Maybe<Guest>;
   /** Update one guestList */
@@ -3767,13 +3286,6 @@ export type Mutation = {
   /** Update many Budget documents */
   updateManyBudgetsConnection: BudgetConnection;
   /**
-   * Update many confirmations
-   * @deprecated Please use the new paginated many mutation (updateManyConfirmationsConnection)
-   */
-  updateManyConfirmations: BatchPayload;
-  /** Update many Confirmation documents */
-  updateManyConfirmationsConnection: ConfirmationConnection;
-  /**
    * Update many guestLists
    * @deprecated Please use the new paginated many mutation (updateManyGuestListsConnection)
    */
@@ -3795,8 +3307,6 @@ export type Mutation = {
   upsertBudget?: Maybe<Budget>;
   /** Upsert one budgetItem */
   upsertBudgetItem?: Maybe<BudgetItem>;
-  /** Upsert one confirmation */
-  upsertConfirmation?: Maybe<Confirmation>;
   /** Upsert one guest */
   upsertGuest?: Maybe<Guest>;
   /** Upsert one guestList */
@@ -3816,11 +3326,6 @@ export type MutationCreateBudgetArgs = {
 
 export type MutationCreateBudgetItemArgs = {
   data: BudgetItemCreateInput;
-};
-
-
-export type MutationCreateConfirmationArgs = {
-  data: ConfirmationCreateInput;
 };
 
 
@@ -3851,11 +3356,6 @@ export type MutationDeleteBudgetArgs = {
 
 export type MutationDeleteBudgetItemArgs = {
   where: BudgetItemWhereUniqueInput;
-};
-
-
-export type MutationDeleteConfirmationArgs = {
-  where: ConfirmationWhereUniqueInput;
 };
 
 
@@ -3911,21 +3411,6 @@ export type MutationDeleteManyBudgetsConnectionArgs = {
   last?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<BudgetManyWhereInput>;
-};
-
-
-export type MutationDeleteManyConfirmationsArgs = {
-  where?: InputMaybe<ConfirmationManyWhereInput>;
-};
-
-
-export type MutationDeleteManyConfirmationsConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
-  where?: InputMaybe<ConfirmationManyWhereInput>;
 };
 
 
@@ -3987,12 +3472,6 @@ export type MutationPublishBudgetArgs = {
 export type MutationPublishBudgetItemArgs = {
   to?: Array<Stage>;
   where: BudgetItemWhereUniqueInput;
-};
-
-
-export type MutationPublishConfirmationArgs = {
-  to?: Array<Stage>;
-  where: ConfirmationWhereUniqueInput;
 };
 
 
@@ -4068,24 +3547,6 @@ export type MutationPublishManyBudgetsConnectionArgs = {
 };
 
 
-export type MutationPublishManyConfirmationsArgs = {
-  to?: Array<Stage>;
-  where?: InputMaybe<ConfirmationManyWhereInput>;
-};
-
-
-export type MutationPublishManyConfirmationsConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
-  from?: InputMaybe<Stage>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
-  to?: Array<Stage>;
-  where?: InputMaybe<ConfirmationManyWhereInput>;
-};
-
-
 export type MutationPublishManyGuestListsArgs = {
   to?: Array<Stage>;
   where?: InputMaybe<GuestListManyWhereInput>;
@@ -4149,14 +3610,6 @@ export type MutationSchedulePublishBudgetItemArgs = {
 };
 
 
-export type MutationSchedulePublishConfirmationArgs = {
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  releaseId?: InputMaybe<Scalars['String']>;
-  to?: Array<Stage>;
-  where: ConfirmationWhereUniqueInput;
-};
-
-
 export type MutationSchedulePublishGuestArgs = {
   releaseAt?: InputMaybe<Scalars['DateTime']>;
   releaseId?: InputMaybe<Scalars['String']>;
@@ -4199,14 +3652,6 @@ export type MutationScheduleUnpublishBudgetItemArgs = {
 };
 
 
-export type MutationScheduleUnpublishConfirmationArgs = {
-  from?: Array<Stage>;
-  releaseAt?: InputMaybe<Scalars['DateTime']>;
-  releaseId?: InputMaybe<Scalars['String']>;
-  where: ConfirmationWhereUniqueInput;
-};
-
-
 export type MutationScheduleUnpublishGuestArgs = {
   from?: Array<Stage>;
   releaseAt?: InputMaybe<Scalars['DateTime']>;
@@ -4240,12 +3685,6 @@ export type MutationUnpublishBudgetArgs = {
 export type MutationUnpublishBudgetItemArgs = {
   from?: Array<Stage>;
   where: BudgetItemWhereUniqueInput;
-};
-
-
-export type MutationUnpublishConfirmationArgs = {
-  from?: Array<Stage>;
-  where: ConfirmationWhereUniqueInput;
 };
 
 
@@ -4319,24 +3758,6 @@ export type MutationUnpublishManyBudgetsConnectionArgs = {
 };
 
 
-export type MutationUnpublishManyConfirmationsArgs = {
-  from?: Array<Stage>;
-  where?: InputMaybe<ConfirmationManyWhereInput>;
-};
-
-
-export type MutationUnpublishManyConfirmationsConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  first?: InputMaybe<Scalars['Int']>;
-  from?: Array<Stage>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
-  stage?: InputMaybe<Stage>;
-  where?: InputMaybe<ConfirmationManyWhereInput>;
-};
-
-
 export type MutationUnpublishManyGuestListsArgs = {
   from?: Array<Stage>;
   where?: InputMaybe<GuestListManyWhereInput>;
@@ -4388,12 +3809,6 @@ export type MutationUpdateBudgetArgs = {
 export type MutationUpdateBudgetItemArgs = {
   data: BudgetItemUpdateInput;
   where: BudgetItemWhereUniqueInput;
-};
-
-
-export type MutationUpdateConfirmationArgs = {
-  data: ConfirmationUpdateInput;
-  where: ConfirmationWhereUniqueInput;
 };
 
 
@@ -4460,23 +3875,6 @@ export type MutationUpdateManyBudgetsConnectionArgs = {
 };
 
 
-export type MutationUpdateManyConfirmationsArgs = {
-  data: ConfirmationUpdateManyInput;
-  where?: InputMaybe<ConfirmationManyWhereInput>;
-};
-
-
-export type MutationUpdateManyConfirmationsConnectionArgs = {
-  after?: InputMaybe<Scalars['ID']>;
-  before?: InputMaybe<Scalars['ID']>;
-  data: ConfirmationUpdateManyInput;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  skip?: InputMaybe<Scalars['Int']>;
-  where?: InputMaybe<ConfirmationManyWhereInput>;
-};
-
-
 export type MutationUpdateManyGuestListsArgs = {
   data: GuestListUpdateManyInput;
   where?: InputMaybe<GuestListManyWhereInput>;
@@ -4532,12 +3930,6 @@ export type MutationUpsertBudgetArgs = {
 export type MutationUpsertBudgetItemArgs = {
   upsert: BudgetItemUpsertInput;
   where: BudgetItemWhereUniqueInput;
-};
-
-
-export type MutationUpsertConfirmationArgs = {
-  upsert: ConfirmationUpsertInput;
-  where: ConfirmationWhereUniqueInput;
 };
 
 
@@ -4608,14 +4000,6 @@ export type Query = {
   budgets: Array<Budget>;
   /** Retrieve multiple budgets using the Relay connection interface */
   budgetsConnection: BudgetConnection;
-  /** Retrieve a single confirmation */
-  confirmation?: Maybe<Confirmation>;
-  /** Retrieve document version */
-  confirmationVersion?: Maybe<DocumentVersion>;
-  /** Retrieve multiple confirmations */
-  confirmations: Array<Confirmation>;
-  /** Retrieve multiple confirmations using the Relay connection interface */
-  confirmationsConnection: ConfirmationConnection;
   /** Retrieve a single guest */
   guest?: Maybe<Guest>;
   /** Retrieve a single guestList */
@@ -4766,44 +4150,6 @@ export type QueryBudgetsConnectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   stage?: Stage;
   where?: InputMaybe<BudgetWhereInput>;
-};
-
-
-export type QueryConfirmationArgs = {
-  locales?: Array<Locale>;
-  stage?: Stage;
-  where: ConfirmationWhereUniqueInput;
-};
-
-
-export type QueryConfirmationVersionArgs = {
-  where: VersionWhereInput;
-};
-
-
-export type QueryConfirmationsArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  locales?: Array<Locale>;
-  orderBy?: InputMaybe<ConfirmationOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
-  stage?: Stage;
-  where?: InputMaybe<ConfirmationWhereInput>;
-};
-
-
-export type QueryConfirmationsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  locales?: Array<Locale>;
-  orderBy?: InputMaybe<ConfirmationOrderByInput>;
-  skip?: InputMaybe<Scalars['Int']>;
-  stage?: Stage;
-  where?: InputMaybe<ConfirmationWhereInput>;
 };
 
 
@@ -5095,7 +4441,7 @@ export type ScheduledOperationUpdatedByArgs = {
   locales?: InputMaybe<Array<Locale>>;
 };
 
-export type ScheduledOperationAffectedDocument = Asset | Budget | BudgetItem | Confirmation | Guest | GuestList;
+export type ScheduledOperationAffectedDocument = Asset | Budget | BudgetItem | Guest | GuestList;
 
 export type ScheduledOperationConnectInput = {
   /** Allow to specify document position in list of connected documents, will default to appending at end of list */
@@ -6538,6 +5884,13 @@ export type DeleteBudgetMutationMutationVariables = Exact<{
 
 export type DeleteBudgetMutationMutation = { __typename?: 'Mutation', deleteBudget?: { __typename?: 'Budget', id: string } | null, unpublishBudget?: { __typename?: 'Budget', id: string } | null };
 
+export type DeleteGuestListMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteGuestListMutation = { __typename?: 'Mutation', deleteGuestList?: { __typename?: 'GuestList', id: string } | null };
+
 export type DeleteGuestMutationVariables = Exact<{
   id?: InputMaybe<Scalars['ID']>;
 }>;
@@ -6603,6 +5956,15 @@ export type UpdateConfirmationMutationVariables = Exact<{
 
 
 export type UpdateConfirmationMutation = { __typename?: 'Mutation', updateGuest?: { __typename?: 'Guest', id: string } | null, publishGuest?: { __typename?: 'Guest', id: string } | null };
+
+export type UpdateGuestListMutationVariables = Exact<{
+  id: Scalars['ID'];
+  listName?: InputMaybe<Scalars['String']>;
+  imageUrl?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpdateGuestListMutation = { __typename?: 'Mutation', updateGuestList?: { __typename?: 'GuestList', id: string } | null, publishGuestList?: { __typename?: 'GuestList', id: string } | null };
 
 export type UpdateGuestMutationVariables = Exact<{
   id?: InputMaybe<Scalars['ID']>;
@@ -6892,6 +6254,39 @@ export function useDeleteBudgetMutationMutation(baseOptions?: Apollo.MutationHoo
 export type DeleteBudgetMutationMutationHookResult = ReturnType<typeof useDeleteBudgetMutationMutation>;
 export type DeleteBudgetMutationMutationResult = Apollo.MutationResult<DeleteBudgetMutationMutation>;
 export type DeleteBudgetMutationMutationOptions = Apollo.BaseMutationOptions<DeleteBudgetMutationMutation, DeleteBudgetMutationMutationVariables>;
+export const DeleteGuestListDocument = gql`
+    mutation DeleteGuestList($id: ID!) {
+  deleteGuestList(where: {id: $id}) {
+    id
+  }
+}
+    `;
+export type DeleteGuestListMutationFn = Apollo.MutationFunction<DeleteGuestListMutation, DeleteGuestListMutationVariables>;
+
+/**
+ * __useDeleteGuestListMutation__
+ *
+ * To run a mutation, you first call `useDeleteGuestListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteGuestListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteGuestListMutation, { data, loading, error }] = useDeleteGuestListMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteGuestListMutation(baseOptions?: Apollo.MutationHookOptions<DeleteGuestListMutation, DeleteGuestListMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteGuestListMutation, DeleteGuestListMutationVariables>(DeleteGuestListDocument, options);
+      }
+export type DeleteGuestListMutationHookResult = ReturnType<typeof useDeleteGuestListMutation>;
+export type DeleteGuestListMutationResult = Apollo.MutationResult<DeleteGuestListMutation>;
+export type DeleteGuestListMutationOptions = Apollo.BaseMutationOptions<DeleteGuestListMutation, DeleteGuestListMutationVariables>;
 export const DeleteGuestDocument = gql`
     mutation DeleteGuest($id: ID = "") {
   deleteGuest(where: {id: $id}) {
@@ -7198,6 +6593,47 @@ export function useUpdateConfirmationMutation(baseOptions?: Apollo.MutationHookO
 export type UpdateConfirmationMutationHookResult = ReturnType<typeof useUpdateConfirmationMutation>;
 export type UpdateConfirmationMutationResult = Apollo.MutationResult<UpdateConfirmationMutation>;
 export type UpdateConfirmationMutationOptions = Apollo.BaseMutationOptions<UpdateConfirmationMutation, UpdateConfirmationMutationVariables>;
+export const UpdateGuestListDocument = gql`
+    mutation UpdateGuestList($id: ID!, $listName: String = "", $imageUrl: String = "") {
+  updateGuestList(
+    data: {imageUrl: $imageUrl, listName: $listName}
+    where: {id: $id}
+  ) {
+    id
+  }
+  publishGuestList(where: {id: $id}) {
+    id
+  }
+}
+    `;
+export type UpdateGuestListMutationFn = Apollo.MutationFunction<UpdateGuestListMutation, UpdateGuestListMutationVariables>;
+
+/**
+ * __useUpdateGuestListMutation__
+ *
+ * To run a mutation, you first call `useUpdateGuestListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateGuestListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateGuestListMutation, { data, loading, error }] = useUpdateGuestListMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      listName: // value for 'listName'
+ *      imageUrl: // value for 'imageUrl'
+ *   },
+ * });
+ */
+export function useUpdateGuestListMutation(baseOptions?: Apollo.MutationHookOptions<UpdateGuestListMutation, UpdateGuestListMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateGuestListMutation, UpdateGuestListMutationVariables>(UpdateGuestListDocument, options);
+      }
+export type UpdateGuestListMutationHookResult = ReturnType<typeof useUpdateGuestListMutation>;
+export type UpdateGuestListMutationResult = Apollo.MutationResult<UpdateGuestListMutation>;
+export type UpdateGuestListMutationOptions = Apollo.BaseMutationOptions<UpdateGuestListMutation, UpdateGuestListMutationVariables>;
 export const UpdateGuestDocument = gql`
     mutation UpdateGuest($id: ID = "", $name: String = "", $phone: String = "", $response: Boolean = false) {
   updateGuest(

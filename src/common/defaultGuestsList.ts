@@ -1,4 +1,4 @@
-import { GuestList } from '../graphql/generated'
+import { Guest, GuestList } from '../graphql/generated'
 
 export const DEFAULT_GUESTS_LIST: GuestList = {
   id: '',
@@ -6,4 +6,12 @@ export const DEFAULT_GUESTS_LIST: GuestList = {
   description: '',
   imageUrl: '',
   listName: ''
+}
+
+export const DEFAULT_GUEST: Guest = {
+  id: '',
+  name: '',
+  phone: '',
+  confirmationCode: '',
+  response: false
 }

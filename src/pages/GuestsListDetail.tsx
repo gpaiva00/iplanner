@@ -1,13 +1,15 @@
 import { Checkbox, Table } from 'flowbite-react'
-import { Check, Plus, Question, TrashSimple, X } from 'phosphor-react'
+import { PencilSimple, Plus, TrashSimple } from 'phosphor-react'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { DEFAULT_GUESTS_LIST } from '../common/defaultGuestsList'
-import { DEFAULT_ICON_SIZE, SMALL_ICON_SIZE } from '../common/iconSizes'
+import { DEFAULT_GUEST, DEFAULT_GUESTS_LIST } from '../common/defaultGuestsList'
+import { DEFAULT_ICON_SIZE } from '../common/iconSizes'
 import AddGuestModal from '../components/AddGuestModal'
 import Badge from '../components/Badge'
 import Button from '../components/Button'
 import DashboardHeader from '../components/DashboardHeader'
+import EditGuestListModal from '../components/EditGuestListModal'
+import EditGuestModal from '../components/EditGuestModal'
 import Loading from '../components/Loading'
 import NoContentPlaceholder from '../components/NoContentPlaceholder'
 import PageFooter from '../components/PageFooter'
@@ -36,6 +38,10 @@ export default function GuestsListDetail() {
   const [selectedGuests, setSelectedGuests] = useState<string[]>([])
 
   const [showAddGuestModal, setShowAddGuestModal] = useState(false)
+  const [showEditGuestModal, setShowEditGuestModal] = useState(false)
+  const [showEditListModal, setShowEditListModal] = useState(false)
+
+  const [editGuest, setEditGuest] = useState<Guest>(DEFAULT_GUEST)
   const [getList, { loading: queryLoading }] = useGetGuestsFromListLazyQuery()
   const [deleteGuest, { loading: deleteLoading }] = useDeleteGuestMutation()
   const [deleteSelectedGuests, { loading: deleteSelectedLoading }] =
@@ -154,6 +160,11 @@ export default function GuestsListDetail() {
     window.location.reload()
   }
 
+  const handleSelectGuestToEdit = (guest: Guest) => {
+    setEditGuest(guest)
+    setShowEditGuestModal(true)
+  }
+
   useEffect(() => {
     if (state === null) {
       location.href = '/dashboard'
@@ -173,6 +184,14 @@ export default function GuestsListDetail() {
             <h1 className="title">{guests.listName}</h1>
             {renderDescription(guests)}
           </div>
+
+          <Button
+            onClick={() => setShowEditListModal(true)}
+            icon={<PencilSimple weight="fill" size={18} />}
+            variant="outline-primary"
+          >
+            Lista
+          </Button>
           <Button
             onClick={() => setShowAddGuestModal(true)}
             icon={<Plus weight="bold" size={DEFAULT_ICON_SIZE} />}
@@ -221,7 +240,10 @@ export default function GuestsListDetail() {
                           onClick={() => handleSelectGuest(guest.id)}
                         />
                       </Table.Cell>
-                      <Table.Cell className="whitespace-nowrap text-primary hover:underline cursor-pointer dark:text-white capitalize">
+                      <Table.Cell
+                        onClick={() => handleSelectGuestToEdit(guest)}
+                        className="whitespace-nowrap text-primary hover:underline cursor-pointer dark:text-white capitalize"
+                      >
                         {guest.name}
                       </Table.Cell>
                       <Table.Cell>{guest.phone}</Table.Cell>
@@ -260,6 +282,18 @@ export default function GuestsListDetail() {
         onClose={() => setShowAddGuestModal(false)}
         show={showAddGuestModal}
         listId={state?.list.id}
+      />
+
+      <EditGuestModal
+        onClose={() => setShowEditGuestModal(false)}
+        show={showEditGuestModal}
+        guest={editGuest}
+      />
+
+      <EditGuestListModal
+        onClose={() => setShowEditListModal(false)}
+        show={showEditListModal}
+        list={state?.list}
       />
 
       <PageFooter />
