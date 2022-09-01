@@ -1,0 +1,9 @@
+mutation DeleteGuest($id: ID = "") {
+  deleteGuest(where: { id: $id }) {
+    id
+  }
+
+  unpublishGuest(where: { id: $id }) {
+    id
+  }
+}

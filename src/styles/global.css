@@ -40,11 +40,11 @@ body {
 }
 
 .budget-card-title {
-  @apply text-base font-bold text-zinc-900 dark:text-white line-clamp-2 hover:underline cursor-pointer;
+  @apply text-base font-medium text-zinc-900 dark:text-white line-clamp-2 hover:underline cursor-pointer;
 }
 
 .budget-card-link {
-  @apply flex items-center gap-1 text-zinc-900 hover:underline;
+  @apply flex items-center gap-1 text-zinc-500 hover:underline;
 }
 
 .description {

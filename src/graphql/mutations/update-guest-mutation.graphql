@@ -1,0 +1,17 @@
+mutation UpdateGuest(
+  $id: ID = ""
+  $name: String = ""
+  $phone: String = ""
+  $response: Boolean = false
+) {
+  updateGuest(
+    where: { id: $id }
+    data: { response: $response, name: $name, phone: $phone }
+  ) {
+    id
+  }
+
+  publishGuest(to: PUBLISHED, where: { id: $id }) {
+    id
+  }
+}

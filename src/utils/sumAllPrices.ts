@@ -1,9 +1,8 @@
-import { Any } from 'currency.js'
-import { formatToCurrency } from './formatToCurrency'
+import { Budget, BudgetItem, BudgetType } from '../graphql/generated'
+import currency from 'currency.js'
 
-export const sumAllPrices = (products: any): number =>
-  products.reduce(
-    (acc: Any, product: { price: number }) =>
-      formatToCurrency(product.price).add(acc),
-    0
-  )
+export const sumAllPrices = (budget: Budget[]): number =>
+  budget.reduce((acc: number, budget: BudgetItem) => {
+    if (budget.budgetType === BudgetType.Purchased) return acc
+    return currency(acc).add(budget.price)
+  }, 0)

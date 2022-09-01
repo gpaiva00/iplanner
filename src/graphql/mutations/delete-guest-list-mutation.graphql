@@ -1,0 +1,5 @@
+mutation DeleteGuestList($id: ID!) {
+  deleteGuestList(where: { id: $id }) {
+    id
+  }
+}

@@ -86,7 +86,7 @@ export default function AddBudgetItemModal(props: AddBudgetItemModalProps) {
       return alert('O link do produto é inválido')
 
     try {
-      const newPrice = currency(price.replace(',', '.')).value
+      const newPrice = currency(price, { separator: '.', decimal: ',' }).value
 
       const { data } = await createBudgetItem({
         variables: {

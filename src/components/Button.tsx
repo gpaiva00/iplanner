@@ -4,7 +4,7 @@ import { CircleNotch } from 'phosphor-react'
 interface ButtonProps {
   className?: string
   onClick?: () => void
-  children: React.ReactNode
+  children?: React.ReactNode
   disabled?: boolean
   type?: 'button' | 'submit' | 'reset'
   size?: 'sm' | 'md' | 'lg' | 'full'
@@ -13,9 +13,11 @@ interface ButtonProps {
     | 'secondary'
     | 'tertiary'
     | 'outline-primary'
+    | 'no-border-primary'
     | 'outline-secondary'
     | 'outline-tertiary'
     | 'danger'
+    | 'no-border-danger'
 
   isLoading?: boolean
   icon?: React.ReactNode
@@ -47,12 +49,16 @@ export default function Button(props: ButtonProps) {
             variant === 'outline-primary',
           'hover:bg-secondary hover:text-white hover:border-secondary':
             variant === 'outline-primary',
+          'hover:bg-secondary hover:text-white hover:border-secondary border-0':
+            variant === 'no-border-primary',
           'bg-outline-secondary': variant === 'outline-secondary',
           'bg-outline-tertiary': variant === 'outline-tertiary',
           'hover:bg-secondary': variant === 'primary',
           'hover:bg-primary': variant === 'secondary',
           'text-secondary border border-secondary hover:bg-secondary hover:text-white':
             variant === 'danger',
+          'text-secondary border-0 hover:bg-secondary hover:text-white':
+            variant === 'no-border-danger',
           'text-gray-700':
             variant === 'secondary' || variant === 'outline-secondary',
           'text-gray-600':

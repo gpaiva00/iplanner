@@ -11,5 +11,5 @@ export {
   getStoreNameFromURL,
   getNameOfBudgetType,
   generateRandomCode,
-  validateURL
+  validateURL,
 }

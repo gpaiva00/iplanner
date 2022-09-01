@@ -1,0 +1,15 @@
+query GetGuestsFromList($id: ID = "") {
+  guestList(where: { id: $id }) {
+    id
+    listName
+    items {
+      ... on Guest {
+        id
+        name
+        confirmationCode
+        phone
+        response
+      }
+    }
+  }
+}

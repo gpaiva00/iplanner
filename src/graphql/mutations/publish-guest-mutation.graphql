@@ -1,0 +1,5 @@
+mutation PublishGuest($id: ID = "") {
+  publishGuest(to: PUBLISHED, where: { id: $id }) {
+    id
+  }
+}

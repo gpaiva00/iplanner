@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import {
-  Budget,
-  useDeleteBudgetMutationMutation,
-  usePublishBudgetMutation,
-  useUpdateBudgetMutationMutation
+  GuestList,
+  useDeleteGuestListMutation,
+  useUpdateGuestListMutation
 } from '../graphql/generated'
 import { validateURL } from '../utils'
 import Button from './Button'
@@ -14,34 +13,28 @@ import Loading from './Loading'
 interface EditBudgetProps {
   show: boolean
   onClose: () => void
-  budget: Budget
+  list: GuestList
 }
 
 export default function EditBudgetModal(props: EditBudgetProps) {
-  const { show, onClose, budget } = props
-  const [id, setId] = useState(budget.id)
-  const [name, setName] = useState(budget.name)
-  const [imageURL, setImageURL] = useState(budget.imageURL)
-  const [imagePreview, setImagePreview] = useState(budget.imageURL)
+  const { show, onClose, list } = props
+
+  const [id, setId] = useState(list.id)
+  const [listName, setListName] = useState(list.listName)
+  const [imageUrl, setImageUrl] = useState(list.imageUrl)
+  const [imagePreview, setImagePreview] = useState(list.imageUrl)
   const [isLoading, setIsLoading] = useState(false)
 
-  const [updateBudget, { loading: mutationLoading }] =
-    useUpdateBudgetMutationMutation()
-  const [deleteBudget, { loading: deleteLoading }] =
-    useDeleteBudgetMutationMutation()
-  const [publishBudget, { loading: publishLoading }] =
-    usePublishBudgetMutation()
-
-  const handleClose = () => {
-    onClose()
-  }
+  const [updateList, { loading: mutationLoading }] =
+    useUpdateGuestListMutation()
+  const [deleteList, { loading: deleteLoading }] = useDeleteGuestListMutation()
 
   let imageTimeout: any = null
 
   const handleOnImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const imageURL = event.target.value
 
-    setImageURL(imageURL)
+    setImageUrl(imageURL)
     setImagePreview('')
 
     const isValid = validateURL(imageURL)
@@ -66,89 +59,78 @@ export default function EditBudgetModal(props: EditBudgetProps) {
     setIsLoading(false)
   }
 
-  const handleEditBudget = async () => {
-    if (!name) {
-      alert('Preencha o nome do item')
+  const handleEditList = async () => {
+    if (!listName) {
+      alert('Preencha o nome da lista')
       return
     }
 
     try {
-      await updateBudget({
+      await updateList({
         variables: {
-          data: {
-            name,
-            imageURL
-          },
-          id
-        }
-      })
-
-      await publishBudget({
-        variables: {
-          id
+          id,
+          imageUrl,
+          listName
         }
       })
 
       window.location.reload()
     } catch (error) {
-      console.error('Error creating Budget', error)
+      console.error('Error editing list', error)
     }
   }
 
-  const handleDeleteBudget = async () => {
-    const dialog = window.confirm(
-      'Tem certeza que deseja excluir este orçamento?'
-    )
+  const handleDeleteList = async () => {
+    const dialog = window.confirm('Tem certeza que deseja excluir esta lista?')
 
     if (!dialog) return
 
     try {
-      await deleteBudget({
+      await deleteList({
         variables: {
           id
         }
       })
 
-      window.location.href = '/budgets'
+      window.location.href = '/guestsList'
     } catch (error) {
-      console.error('Error deleting Budget', error)
+      console.error('Error deleting list', error)
     }
   }
 
   useEffect(() => {
-    setId(budget.id)
-    setName(budget.name)
-    setImageURL(budget.imageURL)
-    setImagePreview(budget.imageURL)
-  }, [budget])
+    setId(list.id)
+    setListName(list.listName)
+    setImageUrl(list.imageUrl)
+    setImagePreview(list.imageUrl)
+  }, [list])
 
   return (
     <CustomModal
       size={'md'}
       title={
         <div className="flex flex-col justify-center">
-          <h1 className="modal-title">Editar orçamento</h1>
+          <h1 className="modal-title">Editar lista de convidados</h1>
         </div>
       }
       show={show}
-      onClose={handleClose}
+      onClose={onClose}
       body={
         <div className="flex flex-col gap-4">
           <CustomInput
-            label="Nome do orçamento"
-            placeholder="Ex: Jogo de lençol"
-            value={name}
-            onChange={e => setName(e.target.value)}
+            label="Nome da lista"
+            placeholder="Ex: Cerimônia"
+            value={listName}
+            onChange={e => setListName(e.target.value)}
             required
           />
 
           <CustomInput
             label="Capa"
             optional
-            placeholder="Ex: https://www.google.com"
-            value={imageURL}
+            placeholder="Ex: https://unsplash.com "
+            value={imageUrl}
             onChange={handleOnImageChange}
-            type="url"
           />
 
           {isLoading && <Loading />}
@@ -169,19 +151,20 @@ export default function EditBudgetModal(props: EditBudgetProps) {
       footer={
         <div className="flex flex-1 gap-4 items-center justify-center">
           <Button
-            onClick={handleDeleteBudget}
+            onClick={handleDeleteList}
             variant="danger"
             size="full"
             type="submit"
             isLoading={deleteLoading}
           >
-            Excluir orçamento
+            Excluir lista
           </Button>
           <Button
-            onClick={handleEditBudget}
+            onClick={handleEditList}
+            variant="primary"
             size="full"
             type="submit"
-            isLoading={mutationLoading || publishLoading}
+            isLoading={mutationLoading}
           >
             Editar
           </Button>

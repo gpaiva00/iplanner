@@ -1,51 +1,89 @@
 import classNames from 'classnames'
-import { CaretRight, CheckCircle } from 'phosphor-react'
+import { CheckCircle } from 'phosphor-react'
 import { useState } from 'react'
 import Button from '../components/Button'
 import CustomInput from '../components/CustomInput'
 import HomeAvatar from '../components/HomeAvatar'
 import HomeHeader from '../components/HomeHeader'
-import Loading from '../components/Loading'
 import PageFooter from '../components/PageFooter'
 
-import { useGetConfirmationCodeQueryQuery } from '../graphql/generated'
+import {
+  Guest,
+  useGetGuestByConfirmationCodeLazyQuery,
+  useUpdateConfirmationMutation
+} from '../graphql/generated'
 
 export default function Home() {
   const [isConfirmedAttendance, setIsConfirmedAttendance] = useState(false)
   const [code, setCode] = useState('')
-  const [guestName, setGuestName] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [guest, setGuest] = useState<Guest | null>(null)
 
-  const { data } = useGetConfirmationCodeQueryQuery({
-    variables: {
-      where: {
-        code
-      }
-    }
-  })
+  const [getGuestQuery, { loading: getGuestQueryLoading }] =
+    useGetGuestByConfirmationCodeLazyQuery()
+  const [updateConfirmation, { loading: updateConfirmationLoading }] =
+    useUpdateConfirmationMutation()
 
-  const handleConfirmAttendance = () => {
-    setIsLoading(true)
-
-    if (!data?.confirmation) {
-      alert('Código de confirmação inválido')
-      setIsLoading(false)
+  const handleConfirmAttendance = async () => {
+    if (!code) {
+      alert('Digite o código de confirmação')
       return
     }
 
-    setGuestName(data.confirmation?.guestName)
+    try {
+      const { data } = await getGuestQuery({
+        variables: {
+          confirmationCode: code
+        }
+      })
 
-    setIsConfirmedAttendance(true)
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 2000)
+      if (!data?.guest?.id) {
+        alert('Código de confirmação inválido')
+        return
+      }
+
+      await updateConfirmation({
+        variables: {
+          guestId: data.guest.id,
+          response: true
+        }
+      })
+
+      setGuest({
+        name: data.guest.name,
+        id: data.guest.id
+      })
+
+      setIsConfirmedAttendance(true)
+    } catch (error) {
+      console.error('Cannot update confirmation:', error)
+    }
   }
 
-  const handleUndoConfirmation = () => {
-    setIsConfirmedAttendance(false)
-    setGuestName('')
-    setCode('')
+  const handleUndoConfirmation = async () => {
+    const dialog = window.confirm(
+      'Tem certeza que deseja cancelar sua presença?'
+    )
+
+    if (!dialog) return
+
+    try {
+      await updateConfirmation({
+        variables: {
+          guestId: guest?.id,
+          response: false
+        }
+      })
+
+      setIsConfirmedAttendance(false)
+      setGuest(null)
+      setCode('')
+      alert('Sua confirmação foi cancelada')
+    } catch (error) {
+      console.error('Cannot undo confirmation: ', error)
+    }
   }
+
+  const isLoading = !!updateConfirmationLoading || !!getGuestQueryLoading
 
   return (
     <div className="gradient-background flex flex-col min-h-screen">
@@ -60,26 +98,28 @@ export default function Home() {
             <p className="text-green-600 font-bold">15/12/2023</p>
           </div> */}
 
-          {isLoading && <Loading />}
-
-          {!isConfirmedAttendance && !isLoading && (
+          {!isConfirmedAttendance && (
             <div className="flex flex-col items-center gap-4 mt-8 mb-16 transition-all opacity-1 ease-in-out">
               <h1 className="title">Confirme sua presença</h1>
 
-              <div className="flex justify-center items-center gap-4">
+              <div className="flex flex-col justify-center items-center gap-4">
                 <CustomInput
                   placeholder="Código de confirmação"
                   value={code}
                   onChange={e => setCode(e.target.value)}
                 />
-                <Button onClick={handleConfirmAttendance} className="font-bold">
-                  <CaretRight />
+                <Button
+                  onClick={handleConfirmAttendance}
+                  size="full"
+                  isLoading={isLoading}
+                >
+                  Confirmar
                 </Button>
               </div>
             </div>
           )}
 
-          {isConfirmedAttendance && !isLoading && (
+          {isConfirmedAttendance && (
             <div
               className={classNames(
                 'flex flex-col items-center gap-4 mt-8 mb-16 transition-opacity ease-in-out duration-700',
@@ -89,18 +129,19 @@ export default function Home() {
             >
               <p className="flex items-center gap-2 text-3xl font-bold text-terracota-600">
                 Confirmado
-                <span className=" text-green-600">{guestName}</span>
+                <span className=" text-green-600">{guest?.name}</span>
                 <CheckCircle className="text-green-600" weight="fill" />
               </p>
-              <p className="text-green-400 mb-8">
+              <p className="text-green-600 mb-8">
                 Você confirmou presença para o casamento.
               </p>
               <Button
                 onClick={handleUndoConfirmation}
                 variant="outline-primary"
-                size="lg"
+                size="full"
+                isLoading={isLoading}
               >
-                Cancelar confirmação
+                Desfazer confirmação
               </Button>
             </div>
           )}
