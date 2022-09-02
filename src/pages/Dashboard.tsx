@@ -7,7 +7,7 @@ export default function Dashboard() {
     <div className="default-background">
       <DashboardHeader />
 
-      <div className="flex flex-1 gap-6 justify-center items-center px-16 pb-16">
+      <div className="flex flex-1 flex-col md:flex-row gap-6 justify-center items-center px-0 pb-0 md:px-16 md:pb-16">
         <a href="/budgets" className="w-80">
           <Card imgSrc="images/finances.jpg">
             <h1 className="card-title">Orçamentos</h1>

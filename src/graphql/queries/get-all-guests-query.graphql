@@ -1,5 +1,5 @@
 query GetAllGuest {
-  guests {
+  guests(last: 10000000) {
     id
     name
     list {

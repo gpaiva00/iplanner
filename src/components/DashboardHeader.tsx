@@ -17,7 +17,7 @@ export default function DashboardHeader(props: DashboardHeaderProps) {
         iPlanner
       </a>
 
-      <div className="flex flex-1 gap-10 items-center">
+      <div className="flex flex-1 gap-10 items-center opacity-0 md:opacity-100">
         <a
           href="/dashboard"
           className={classNames('header-menu', {

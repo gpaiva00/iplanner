@@ -2,7 +2,7 @@ query GetGuestsFromList($id: ID = "") {
   guestList(where: { id: $id }) {
     id
     listName
-    items {
+    items(last: 10000000) {
       ... on Guest {
         id
         name

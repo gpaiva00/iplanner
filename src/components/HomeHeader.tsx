@@ -1,25 +1,28 @@
+import { useNavigate } from 'react-router-dom'
+import Button from './Button'
+
 interface HomeHeaderProps {
-  showLoginButton?: boolean;
+  showLoginButton?: boolean
 }
 
 export default function HomeHeader(props: HomeHeaderProps) {
-  const { showLoginButton = true } = props;
+  const { showLoginButton = true } = props
+  const navigate = useNavigate()
+
+  const handleGoToLogin = () => {
+    navigate('/login')
+  }
 
   return (
-    <div className="w-full flex justify-between items-center px-10 py-5">
+    <div className="w-full flex justify-between items-center px-4 lg:px-10 py-3 lg:py-5">
       <a href="/" className="header-title">
         iPlanner
       </a>
       {showLoginButton && (
-        <span>
-          <a
-            href="/login"
-            className="bg-transparent border border-primary text-primary h-10 py-2 px-4 rounded transition-colors hover:bg-primary hover:text-white"
-          >
-            Login
-          </a>
-        </span>
+        <Button variant="outline-primary" onClick={handleGoToLogin}>
+          Login
+        </Button>
       )}
     </div>
-  );
+  )
 }

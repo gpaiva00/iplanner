@@ -1,0 +1,5 @@
+query GetGuestByNameOrPhone($name: String!, $phone: String = "") {
+  guests(where: { name: $name, OR: { phone: $phone } }) {
+    id
+  }
+}

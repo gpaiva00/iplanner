@@ -72,7 +72,7 @@ export default function GuestsListDetail() {
         <span>{`${list.items?.length > 1 ? 'convidados' : 'convidado'}`}</span>
         &#183;
         {!confirmedGuests.length && <span>Nenhum confirmado por enquanto</span>}
-        {confirmedGuests.length && (
+        {!!confirmedGuests.length && (
           <>
             <span>{confirmedGuests.length}</span>
             <span>{`${

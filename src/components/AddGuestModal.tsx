@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import {
   useCreateGuestMutation,
+  useGetGuestByNameOrPhoneLazyQuery,
   usePublishGuestMutation
 } from '../graphql/generated'
 import generateRandomAlphaNumericCode from '../utils/generateRandomCode'
@@ -19,15 +20,29 @@ export default function AddGuestModal(props: AddGuestModalProps) {
   const { show, onClose, listId } = props
 
   const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
+  const [phone, setPhone] = useState(null)
 
   const [createGuest, { loading: mutationLoading }] = useCreateGuestMutation()
   const [publishGuest, { loading: publishLoading }] = usePublishGuestMutation()
+  const [getGuestByNameOrPhone, { loading: queryLoading }] =
+    useGetGuestByNameOrPhoneLazyQuery()
 
   const handleAddGuestsList = async () => {
     if (!name) return alert('Preencha o nome do convidado')
 
     try {
+      const { data: guestByNameOrPhone } = await getGuestByNameOrPhone({
+        variables: {
+          name,
+          phone
+        }
+      })
+
+      if (!!guestByNameOrPhone?.guests.length) {
+        alert('Já existe um convidado com esse nome ou telefone')
+        return
+      }
+
       const { data } = await createGuest({
         variables: {
           listId,
@@ -92,7 +107,7 @@ export default function AddGuestModal(props: AddGuestModalProps) {
             variant="primary"
             size="full"
             type="submit"
-            isLoading={mutationLoading || publishLoading}
+            isLoading={mutationLoading || publishLoading || queryLoading}
           >
             Adicionar
           </Button>

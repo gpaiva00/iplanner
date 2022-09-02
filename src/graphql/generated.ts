@@ -2826,8 +2826,6 @@ export type GuestUpdateManyInlineInput = {
 };
 
 export type GuestUpdateManyInput = {
-  name?: InputMaybe<Scalars['String']>;
-  phone?: InputMaybe<Scalars['String']>;
   response?: InputMaybe<Scalars['Boolean']>;
 };
 
@@ -3023,6 +3021,8 @@ export type GuestWhereInput = {
 export type GuestWhereUniqueInput = {
   confirmationCode?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  phone?: InputMaybe<Scalars['String']>;
 };
 
 export enum ImageFit {
@@ -6017,6 +6017,14 @@ export type GetGuestByConfirmationCodeQueryVariables = Exact<{
 
 export type GetGuestByConfirmationCodeQuery = { __typename?: 'Query', guest?: { __typename?: 'Guest', id: string, name?: string | null } | null };
 
+export type GetGuestByNameOrPhoneQueryVariables = Exact<{
+  name: Scalars['String'];
+  phone?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetGuestByNameOrPhoneQuery = { __typename?: 'Query', guests: Array<{ __typename?: 'Guest', id: string }> };
+
 export type GetGuestsFromListQueryVariables = Exact<{
   id?: InputMaybe<Scalars['ID']>;
 }>;
@@ -6724,7 +6732,7 @@ export type FilterBudgetItemsQueryLazyQueryHookResult = ReturnType<typeof useFil
 export type FilterBudgetItemsQueryQueryResult = Apollo.QueryResult<FilterBudgetItemsQueryQuery, FilterBudgetItemsQueryQueryVariables>;
 export const GetAllGuestDocument = gql`
     query GetAllGuest {
-  guests {
+  guests(last: 10000000) {
     id
     name
     list {
@@ -6926,12 +6934,48 @@ export function useGetGuestByConfirmationCodeLazyQuery(baseOptions?: Apollo.Lazy
 export type GetGuestByConfirmationCodeQueryHookResult = ReturnType<typeof useGetGuestByConfirmationCodeQuery>;
 export type GetGuestByConfirmationCodeLazyQueryHookResult = ReturnType<typeof useGetGuestByConfirmationCodeLazyQuery>;
 export type GetGuestByConfirmationCodeQueryResult = Apollo.QueryResult<GetGuestByConfirmationCodeQuery, GetGuestByConfirmationCodeQueryVariables>;
+export const GetGuestByNameOrPhoneDocument = gql`
+    query GetGuestByNameOrPhone($name: String!, $phone: String = "") {
+  guests(where: {name: $name, OR: {phone: $phone}}) {
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetGuestByNameOrPhoneQuery__
+ *
+ * To run a query within a React component, call `useGetGuestByNameOrPhoneQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGuestByNameOrPhoneQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGuestByNameOrPhoneQuery({
+ *   variables: {
+ *      name: // value for 'name'
+ *      phone: // value for 'phone'
+ *   },
+ * });
+ */
+export function useGetGuestByNameOrPhoneQuery(baseOptions: Apollo.QueryHookOptions<GetGuestByNameOrPhoneQuery, GetGuestByNameOrPhoneQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetGuestByNameOrPhoneQuery, GetGuestByNameOrPhoneQueryVariables>(GetGuestByNameOrPhoneDocument, options);
+      }
+export function useGetGuestByNameOrPhoneLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetGuestByNameOrPhoneQuery, GetGuestByNameOrPhoneQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetGuestByNameOrPhoneQuery, GetGuestByNameOrPhoneQueryVariables>(GetGuestByNameOrPhoneDocument, options);
+        }
+export type GetGuestByNameOrPhoneQueryHookResult = ReturnType<typeof useGetGuestByNameOrPhoneQuery>;
+export type GetGuestByNameOrPhoneLazyQueryHookResult = ReturnType<typeof useGetGuestByNameOrPhoneLazyQuery>;
+export type GetGuestByNameOrPhoneQueryResult = Apollo.QueryResult<GetGuestByNameOrPhoneQuery, GetGuestByNameOrPhoneQueryVariables>;
 export const GetGuestsFromListDocument = gql`
     query GetGuestsFromList($id: ID = "") {
   guestList(where: {id: $id}) {
     id
     listName
-    items {
+    items(last: 10000000) {
       ... on Guest {
         id
         name
